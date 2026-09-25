@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Request</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+
+        body{
+            background:#f5f7fb;
+            font-family:Arial;
+        }
+
+        .container-box{
+            max-width:700px;
+            margin:60px auto;
+            background:white;
+            padding:40px;
+            border-radius:15px;
+            box-shadow:0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        h2{
+            text-align:center;
+            color:#c40000;
+            margin-bottom:30px;
+        }
+
+        .btn-danger{
+            width:100%;
+            padding:12px;
+            font-size:18px;
+        }
+
+    </style>
+
+</head>
+<body>
+
+<div class="container">
+
+    <div class="container-box">
+
+        <h2>Update Blood Request</h2>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label>Patient Name</label>
+                <input type="text"
+                       name="patient_name"
+                       value="{{ request.patient_name }}"
+                       class="form-control"
+                       required>
+            </div>
+
+            <div class="mb-3">
+                <label>Blood Group</label>
+
+                <select name="blood_group"
+                        class="form-select"
+                        required>
+
+                    <option>{{ request.blood_group }}</option>
+
+                    <option>A+</option>
+                    <option>A-</option>
+                    <option>B+</option>
+                    <option>B-</option>
+                    <option>O+</option>
+                    <option>O-</option>
+                    <option>AB+</option>
+                    <option>AB-</option>
+
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label>Units Required</label>
+
+                <input type="number"
+                       name="units_required"
+                       value="{{ request.units_required }}"
+                       class="form-control"
+                       required>
+            </div>
+
+            <div class="mb-3">
+                <label>Hospital Name</label>
+
+                <input type="text"
+                       name="hospital_name"
+                       value="{{ request.hospital_name }}"
+                       class="form-control"
+                       required>
+            </div>
+
+            <div class="mb-3">
+                <label>City</label>
+
+                <input type="text"
+                       name="city"
+                       value="{{ request.city }}"
+                       class="form-control"
+                       required>
+            </div>
+
+            <div class="mb-3">
+                <label>Contact Number</label>
+
+                <input type="text"
+                       name="contact_number"
+                       value="{{ request.contact_number }}"
+                       class="form-control"
+                       required>
+            </div>
+
+            <button type="submit" class="btn btn-danger">
+                Update Request
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>

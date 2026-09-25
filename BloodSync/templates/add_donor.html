@@ -1,0 +1,2690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Add Donor - BloodConnect</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+
+body{
+    background:#f5f7fb;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+/* Navbar */
+
+.navbar{
+    background:linear-gradient(to right,#990000,#e60000);
+}
+
+.navbar-brand{
+    color:white !important;
+    font-size:30px;
+    font-weight:bold;
+}
+
+/* Hero */
+
+.hero{
+    background:
+    linear-gradient(rgba(0,0,0,.65),rgba(0,0,0,.65)),
+    url('https://images.unsplash.com/photo-1615461066841-6116e61058f4?w=1600');
+
+    background-size:cover;
+    background-position:center;
+    color:white;
+    padding:90px 20px;
+    text-align:center;
+}
+
+.hero h1{
+    font-weight:bold;
+}
+
+.hero p{
+    font-size:18px;
+}
+
+/* Form Card */
+
+.request-card{
+    background:white;
+    border-radius:20px;
+    padding:40px;
+    box-shadow:0 8px 25px rgba(0,0,0,.1);
+    margin-top:-50px;
+    position:relative;
+    z-index:5;
+}
+
+.section-title{
+    color:#c40000;
+    font-weight:bold;
+}
+
+label{
+    font-weight:600;
+    margin-bottom:5px;
+}
+
+.form-control,
+.form-select{
+    height:50px;
+    border-radius:10px;
+}
+
+textarea.form-control{
+    height:auto;
+}
+
+.btn-danger{
+    background:#c40000;
+    border:none;
+    padding:12px 40px;
+}
+
+.btn-danger:hover{
+    background:#990000;
+}
+
+.info-text{
+    font-size:13px;
+    color:gray;
+}
+
+/* Validation */
+
+.error{
+    color:red;
+    font-size:13px;
+    display:none;
+}
+
+.success{
+    color:green;
+    font-size:14px;
+}
+
+/* Footer */
+
+footer{
+    margin-top:60px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- Navbar -->
+
+<nav class="navbar navbar-expand-lg p-3">
+
+<div class="container">
+
+<a class="navbar-brand" href="/">
+BloodConnect
+</a>
+
+</div>
+
+</nav>
+
+<!-- Hero -->
+
+<section class="hero">
+
+<div class="container">
+
+<h1>Become A Blood Donor</h1>
+
+<p>
+Every donor is a hero. One donation can save multiple lives.
+</p>
+
+</div>
+
+</section>
+
+<!-- Form -->
+
+<div class="container">
+
+<div class="request-card">
+
+<h2 class="section-title text-center mb-4">
+Add Donor
+</h2>
+
+<form method="POST" id="donorForm">
+
+{% csrf_token %}
+
+<div class="row">
+
+<!-- Name -->
+
+<div class="col-md-6 mb-3">
+
+<label>Full Name</label>
+
+<input
+type="text"
+name="name"
+id="name"
+class="form-control"
+placeholder="Enter Full Name"
+required>
+
+</div>
+
+<!-- Gender -->
+
+<div class="col-md-6 mb-3">
+
+<label>Gender</label>
+
+<select
+name="gender"
+id="gender"
+class="form-select"
+required>
+
+<option value="">Select Gender</option>
+
+<option>Male</option>
+
+<option>Female</option>
+
+<option>Other</option>
+
+</select>
+
+</div>
+
+<!-- Age -->
+
+<div class="col-md-6 mb-3">
+
+<label>Age</label>
+
+<input
+type="number"
+name="age"
+id="age"
+class="form-control"
+min="18"
+max="65"
+placeholder="18 - 65"
+required>
+
+<small class="info-text">
+Eligible age: 18 to 65 years
+</small>
+
+<div id="ageError" class="error">
+You are not eligible to donate blood.
+</div>
+
+</div>
+
+<!-- Blood Group -->
+
+<div class="col-md-6 mb-3">
+
+<label>Blood Group</label>
+
+<select
+name="blood_group"
+id="blood_group"
+class="form-select"
+required>
+
+<option value="">
+Select Blood Group
+</option>
+
+<option>A+</option>
+
+<option>A-</option>
+
+<option>B+</option>
+
+<option>B-</option>
+
+<option>O+</option>
+
+<option>O-</option>
+
+<option>AB+</option>
+
+<option>AB-</option>
+
+</select>
+
+</div>
+
+<!-- Weight -->
+
+<div class="col-md-6 mb-3">
+
+<label>Weight (kg)</label>
+
+<input
+type="number"
+name="weight"
+id="weight"
+class="form-control"
+min="50"
+max="150"
+placeholder="Minimum 50 kg"
+required>
+
+<small class="info-text">
+Minimum eligible weight: 50 kg
+</small>
+
+<div id="weightError" class="error">
+Minimum weight should be 50 kg.
+</div>
+
+</div>
+
+<!-- Phone -->
+
+<div class="col-md-6 mb-3">
+
+<label>Phone Number</label>
+
+<input
+type="text"
+name="phone"
+id="phone"
+class="form-control"
+maxlength="10"
+placeholder="10 Digit Mobile Number"
+required>
+
+<small class="info-text">
+Only 10 digit Indian mobile number allowed.
+</small>
+
+<div id="phoneError" class="error">
+Enter a valid 10-digit mobile number.
+</div>
+
+</div>
+<!-- Hemoglobin -->
+
+<div class="col-md-6 mb-3">
+
+<label>Hemoglobin (g/dL)</label>
+
+<input
+type="number"
+step="0.1"
+name="hemoglobin"
+id="hemoglobin"
+class="form-control"
+placeholder="Example : 13.5"
+required>
+
+<small class="info-text">
+Minimum eligible hemoglobin:
+Male - 13.0 g/dL
+Female - 12.5 g/dL
+</small>
+
+<div id="hemoError" class="error">
+Your hemoglobin level is too low to donate blood.
+</div>
+
+</div>
+
+<!-- State -->
+
+<div class="col-md-6 mb-3">
+
+<label>State / Union Territory</label>
+
+<select
+name="state"
+id="state"
+class="form-select"
+required>
+
+<option value="">Select State / Union Territory</option>
+<option value="Andhra Pradesh">Andhra Pradesh</option>
+<option value="Arunachal Pradesh">Arunachal Pradesh</option>
+<option value="Assam">Assam</option>
+<option value="Bihar">Bihar</option>
+<option value="Chhattisgarh">Chhattisgarh</option>
+<option value="Goa">Goa</option>
+<option value="Gujarat">Gujarat</option>
+<option value="Haryana">Haryana</option>
+<option value="Himachal Pradesh">Himachal Pradesh</option>
+<option value="Jharkhand">Jharkhand</option>
+<option value="Karnataka">Karnataka</option>
+<option value="Kerala">Kerala</option>
+<option value="Madhya Pradesh">Madhya Pradesh</option>
+<option value="Maharashtra">Maharashtra</option>
+<option value="Manipur">Manipur</option>
+<option value="Meghalaya">Meghalaya</option>
+<option value="Mizoram">Mizoram</option>
+<option value="Nagaland">Nagaland</option>
+<option value="Odisha">Odisha</option>
+<option value="Punjab">Punjab</option>
+<option value="Rajasthan">Rajasthan</option>
+<option value="Sikkim">Sikkim</option>
+<option value="Tamil Nadu">Tamil Nadu</option>
+<option value="Telangana">Telangana</option>
+<option value="Tripura">Tripura</option>
+<option value="Uttar Pradesh">Uttar Pradesh</option>
+<option value="Uttarakhand">Uttarakhand</option>
+<option value="West Bengal">West Bengal</option>
+
+<!-- Union Territories -->
+
+<option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+<option value="Chandigarh">Chandigarh</option>
+<option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and Diu</option>
+<option value="Delhi">Delhi (NCT)</option>
+<option value="Jammu and Kashmir">Jammu and Kashmir</option>
+<option value="Ladakh">Ladakh</option>
+<option value="Lakshadweep">Lakshadweep</option>
+<option value="Puducherry">Puducherry</option>
+
+</select>
+
+</div>
+
+<!-- City -->
+
+<div class="col-md-6 mb-3">
+
+<label>City</label>
+
+<select
+name="city"
+id="city"
+class="form-select"
+required>
+
+<option value="">
+Select State First
+</option>
+
+</select>
+
+</div>
+
+<!-- Last Donation -->
+
+<div class="col-md-6 mb-3">
+
+<label>Last Blood Donation Date</label>
+
+<input
+type="date"
+name="last_donation_date"
+id="lastDonation"
+class="form-control">
+
+<small class="info-text">
+A minimum gap of 6 months is required between blood donations.
+</small>
+
+<div id="donationMessage"
+class="mt-2 fw-bold">
+</div>
+
+</div>
+
+<!-- Health Issues -->
+
+<div class="col-md-12 mb-4">
+
+<label>Health Issues</label>
+
+<textarea
+
+name="health_issues"
+
+id="health_issues"
+
+class="form-control"
+
+rows="4"
+
+placeholder="Example: Diabetes, Asthma, None, BP etc."
+
+></textarea>
+
+<small class="info-text">
+
+If you have serious health conditions,
+you may not be eligible to donate blood.
+
+</small>
+
+<div id="healthError" class="error">
+Sorry! Based on the health issue entered, you are currently not eligible to donate blood.
+</div>
+
+</div>
+
+<!-- Eligibility Status -->
+
+<div class="col-md-12">
+
+<div
+id="eligibilityStatus"
+class="alert alert-success d-none">
+
+You are eligible to donate blood.
+
+</div>
+
+</div>
+
+<!-- Submit -->
+
+<div class="col-md-12 text-center mt-3">
+
+<button
+type="submit"
+class="btn btn-danger btn-lg">
+
+Become Donor
+
+</button>
+
+</div>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+<!-- WHY DONATE BLOOD -->
+
+<section class="container mt-5">
+
+<div class="row">
+
+<div class="col-md-4 mb-4">
+
+<div class="card shadow border-0 h-100">
+
+<div class="card-body text-center">
+
+<h3 class="text-danger">
+
+❤️
+
+</h3>
+
+<h4>
+
+Save Lives
+
+</h4>
+
+<p>
+
+One blood donation can save up to three lives.
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-4 mb-4">
+
+<div class="card shadow border-0 h-100">
+
+<div class="card-body text-center">
+
+<h3 class="text-danger">
+
+🩸
+
+</h3>
+
+<h4>
+
+Emergency Support
+
+</h4>
+
+<p>
+
+Your donation helps hospitals during emergencies.
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-4 mb-4">
+
+<div class="card shadow border-0 h-100">
+
+<div class="card-body text-center">
+
+<h3 class="text-danger">
+
+🤝
+
+</h3>
+
+<h4>
+
+Join Our Community
+
+</h4>
+
+<p>
+
+Become a registered donor and help people whenever needed.
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<footer class="text-center mt-5 p-4 bg-dark text-white">
+
+<h4>
+
+BloodConnect
+
+</h4>
+
+<p>
+
+Donate Blood • Save Lives
+
+</p>
+
+<p>
+
+© 2026 BloodConnect
+
+</p>
+
+</footer>
+
+<script>
+    // =============================
+// BLOOD DONOR ELIGIBILITY
+// Part 3A
+// =============================
+
+const donorForm = document.getElementById("donorForm");
+
+const age = document.getElementById("age");
+const weight = document.getElementById("weight");
+const phone = document.getElementById("phone");
+const gender = document.getElementById("gender");
+const hemoglobin = document.getElementById("hemoglobin");
+const health = document.getElementById("health_issues");
+
+const ageError = document.getElementById("ageError");
+const weightError = document.getElementById("weightError");
+const phoneError = document.getElementById("phoneError");
+const hemoError = document.getElementById("hemoError");
+const healthError = document.getElementById("healthError");
+const eligibilityStatus =
+document.getElementById("eligibilityStatus");
+
+let eligible = true;
+
+// ================= AGE =================
+
+age.addEventListener("input", function(){
+
+let value = parseInt(this.value);
+
+if(value < 18 || value > 65){
+
+ageError.style.display = "block";
+eligible = false;
+
+}else{
+
+ageError.style.display = "none";
+
+}
+
+});
+
+// ================= WEIGHT =================
+
+weight.addEventListener("input", function(){
+
+let value = parseInt(this.value);
+
+if(value < 50){
+
+weightError.style.display = "block";
+eligible = false;
+
+}else{
+
+weightError.style.display = "none";
+
+}
+
+});
+
+// ================= PHONE =================
+
+phone.addEventListener("input", function(){
+
+this.value = this.value.replace(/\D/g,'');
+
+if(this.value.length != 10){
+
+phoneError.style.display = "block";
+eligible = false;
+
+}else{
+
+phoneError.style.display = "none";
+
+}
+
+});
+
+// ================= HEMOGLOBIN =================
+
+hemoglobin.addEventListener("input", function(){
+
+let hb = parseFloat(this.value);
+
+let g = gender.value;
+
+if(g == "Male"){
+
+if(hb < 13){
+
+hemoError.innerHTML =
+"Male donors must have at least 13.0 g/dL hemoglobin.";
+
+hemoError.style.display = "block";
+
+eligible = false;
+
+}else{
+
+hemoError.style.display = "none";
+
+}
+
+}
+
+else if(g == "Female"){
+
+if(hb < 12.5){
+
+hemoError.innerHTML =
+"Female donors must have at least 12.5 g/dL hemoglobin.";
+
+hemoError.style.display = "block";
+
+eligible = false;
+
+}else{
+
+hemoError.style.display = "none";
+
+}
+
+}
+
+});
+
+// ================= HEALTH CHECK =================
+
+const blockedDiseases = [
+
+"hiv",
+
+"aids",
+
+"hepatitis",
+
+"hepatitis b",
+
+"hepatitis c",
+
+"cancer",
+
+"heart disease",
+
+"kidney failure",
+
+"lung disease",
+
+"tuberculosis",
+
+"tb",
+
+"epilepsy",
+
+"dengue",
+
+"malaria",
+
+"covid",
+
+"covid-19"
+
+];
+
+health.addEventListener("keyup", function(){
+
+let text = this.value.toLowerCase();
+
+let found = false;
+
+for(let disease of blockedDiseases){
+
+if(text.includes(disease)){
+
+found = true;
+
+break;
+
+}
+
+}
+
+if(found){
+
+healthError.style.display = "block";
+
+eligible = false;
+
+}else{
+
+healthError.style.display = "none";
+
+}
+
+});
+
+// ================= LIVE ELIGIBILITY =================
+
+function checkEligibility(){
+
+eligible = true;
+
+// AGE
+
+if(parseInt(age.value) < 18 || parseInt(age.value) > 65){
+
+eligible = false;
+
+}
+
+// WEIGHT
+
+if(parseInt(weight.value) < 50){
+
+eligible = false;
+
+}
+
+// PHONE
+
+if(phone.value.length != 10){
+
+eligible = false;
+
+}
+
+// HEMOGLOBIN
+
+let hb = parseFloat(hemoglobin.value);
+
+if(gender.value == "Male" && hb < 13){
+
+eligible = false;
+
+}
+
+if(gender.value == "Female" && hb < 12.5){
+
+eligible = false;
+
+}
+
+if(eligible){
+
+eligibilityStatus.classList.remove("d-none");
+
+eligibilityStatus.classList.remove("alert-danger");
+
+eligibilityStatus.classList.add("alert-success");
+
+eligibilityStatus.innerHTML =
+"✅ You are currently eligible to donate blood.";
+
+}else{
+
+eligibilityStatus.classList.remove("d-none");
+
+eligibilityStatus.classList.remove("alert-success");
+
+eligibilityStatus.classList.add("alert-danger");
+
+eligibilityStatus.innerHTML =
+"❌ You are currently NOT eligible to donate blood.";
+
+}
+
+}
+
+age.addEventListener("keyup",checkEligibility);
+weight.addEventListener("keyup",checkEligibility);
+phone.addEventListener("keyup",checkEligibility);
+gender.addEventListener("change",checkEligibility);
+hemoglobin.addEventListener("keyup",checkEligibility);
+health.addEventListener("keyup",checkEligibility);
+// =========================================
+// LAST DONATION DATE VALIDATION
+// =========================================
+
+const lastDonation = document.getElementById("lastDonation");
+const donationMessage = document.getElementById("donationMessage");
+
+lastDonation.addEventListener("change", function(){
+
+    if(this.value == ""){
+        donationMessage.innerHTML = "";
+        return;
+    }
+
+    let lastDate = new Date(this.value);
+    let today = new Date();
+
+    let diff = today.getTime() - lastDate.getTime();
+
+    let days = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+    if(days < 180){
+
+        let remaining = 180 - days;
+
+        let months = Math.floor(remaining / 30);
+
+        let extraDays = remaining % 30;
+
+        donationMessage.className = "text-danger fw-bold mt-2";
+
+        donationMessage.innerHTML =
+        "❌ You are not eligible yet. Please wait approximately " +
+        months +
+        " month(s) and " +
+        extraDays +
+        " day(s) before donating blood again.";
+
+        eligible = false;
+
+    }
+
+    else{
+
+        donationMessage.className = "text-success fw-bold mt-2";
+
+        donationMessage.innerHTML =
+        "✅ You are eligible based on your last donation date.";
+
+    }
+
+});
+
+
+// =========================================
+// FINAL FORM VALIDATION
+// =========================================
+
+donorForm.addEventListener("submit", function(e){
+
+    checkEligibility();
+
+    // Age
+    if(parseInt(age.value) < 18 || parseInt(age.value) > 65){
+
+        alert("Age must be between 18 and 65 years.");
+
+        e.preventDefault();
+
+        return;
+
+    }
+
+    // Weight
+
+    if(parseInt(weight.value) < 50){
+
+        alert("Minimum weight required is 50 kg.");
+
+        e.preventDefault();
+
+        return;
+
+    }
+
+    // Phone
+
+    if(!/^[6-9][0-9]{9}$/.test(phone.value)){
+
+        alert("Enter a valid 10-digit Indian mobile number.");
+
+        e.preventDefault();
+
+        return;
+
+    }
+
+    // Hemoglobin
+
+    let hb = parseFloat(hemoglobin.value);
+
+    if(gender.value == "Male" && hb < 13){
+
+        alert("Male donors should have at least 13.0 g/dL hemoglobin.");
+
+        e.preventDefault();
+
+        return;
+
+    }
+
+    if(gender.value == "Female" && hb < 12.5){
+
+        alert("Female donors should have at least 12.5 g/dL hemoglobin.");
+
+        e.preventDefault();
+
+        return;
+
+    }
+
+    // Health Issues
+
+    let issue = health.value.toLowerCase();
+
+    for(let disease of blockedDiseases){
+
+        if(issue.includes(disease)){
+
+            healthError.style.display = "block";
+
+            health.scrollIntoView({behavior:"smooth", block:"center"});
+
+            e.preventDefault();
+
+            return;
+
+        }
+
+    }
+
+    // Last Donation
+
+    if(lastDonation.value != ""){
+
+        let last = new Date(lastDonation.value);
+
+        let today = new Date();
+
+        let gap = today.getTime() - last.getTime();
+
+        let totalDays = Math.floor(gap / (1000*60*60*24));
+
+        if(totalDays < 180){
+
+            alert("There must be at least a 6-month gap between two blood donations.");
+
+            e.preventDefault();
+
+            return;
+
+        }
+
+    }
+
+    alert("🎉 Congratulations! You are eligible to donate blood.");
+
+});
+
+// ======================================
+// STATE -> CITY DATA
+// Part 5A-1
+// Andhra Pradesh
+// ======================================
+
+const stateCityData = {
+
+"Andhra Pradesh":[
+
+"Anantapur",
+"Anakapalle",
+"Alluri Sitharama Raju",
+"Bapatla",
+"Chittoor",
+"East Godavari",
+"Eluru",
+"Guntur",
+"Kakinada",
+"Konaseema",
+"Krishna",
+"Kurnool",
+"Nandyal",
+"NTR",
+"Palnadu",
+"Parvathipuram Manyam",
+"Prakasam",
+"Srikakulam",
+"Sri Potti Sriramulu Nellore",
+"Tirupati",
+"Visakhapatnam",
+"Vizianagaram",
+"West Godavari",
+"YSR Kadapa",
+
+// Major Cities
+
+"Vijayawada",
+"Nellore",
+"Rajahmundry",
+"Kadapa",
+"Ongole",
+"Machilipatnam",
+"Tenali",
+"Narasaraopet",
+"Bhimavaram",
+"Tadepalligudem",
+"Proddatur",
+"Adoni",
+"Madanapalle",
+"Hindupur",
+"Amalapuram",
+"Gudivada",
+"Chilakaluripet",
+"Dharmavaram",
+"Palakollu",
+"Tanuku",
+"Rayachoti",
+"Puttur",
+"Naidupeta",
+"Kavali",
+"Markapur",
+"Ponnur",
+"Repalle",
+"Mangalagiri",
+"Yemmiganur",
+"Kadiri",
+"Gooty",
+"Tuni",
+"Samalkot",
+"Jammalamadugu",
+"Pulivendula",
+"Sattenapalle",
+"Vinukonda",
+"Ichchapuram",
+"Nuzvid"
+
+],
+// ======================================
+// Part 5A-2
+// Arunachal Pradesh & Assam
+// ======================================
+
+"Arunachal Pradesh":[
+
+"Itanagar",
+"Naharlagun",
+"Tawang",
+"Bomdila",
+"Ziro",
+"Pasighat",
+"Aalo",
+"Tezu",
+"Roing",
+"Khonsa",
+"Changlang",
+"Namsai",
+"Seppa",
+"Daporijo",
+"Yingkiong",
+"Anini",
+"Basar",
+"Longding",
+"Hawai",
+"Dirang"
+
+],
+
+"Assam":[
+
+"Guwahati",
+"Dibrugarh",
+"Silchar",
+"Jorhat",
+"Nagaon",
+"Tezpur",
+"Tinsukia",
+"Goalpara",
+"Dhubri",
+"Sivasagar",
+"Golaghat",
+"Karimganj",
+"Hailakandi",
+"North Lakhimpur",
+"Mangaldoi",
+"Barpeta",
+"Nalbari",
+"Kokrajhar",
+"Bongaigaon",
+"Morigaon",
+"Dhemaji",
+"Biswanath Chariali",
+"Lumding",
+"Hojai",
+"Sonari",
+"Margherita",
+"Rangia",
+"Pathsala",
+"Bokakhat",
+"Howraghat"
+
+],
+// ======================================
+// Part 5A-3
+// Bihar & Chhattisgarh
+// ======================================
+
+"Bihar":[
+
+"Patna",
+"Gaya",
+"Bhagalpur",
+"Muzaffarpur",
+"Darbhanga",
+"Purnia",
+"Bihar Sharif",
+"Ara",
+"Begusarai",
+"Katihar",
+"Munger",
+"Chapra",
+"Samastipur",
+"Sasaram",
+"Siwan",
+"Hajipur",
+"Motihari",
+"Bettiah",
+"Kishanganj",
+"Sitamarhi",
+"Madhubani",
+"Saharsa",
+"Khagaria",
+"Jamui",
+"Nawada",
+"Buxar",
+"Jehanabad",
+"Arrah",
+"Lakhisarai",
+"Sheikhpura"
+
+],
+
+"Chhattisgarh":[
+
+"Raipur",
+"Bhilai",
+"Durg",
+"Bilaspur",
+"Korba",
+"Raigarh",
+"Jagdalpur",
+"Ambikapur",
+"Rajnandgaon",
+"Dhamtari",
+"Mahasamund",
+"Kanker",
+"Kawardha",
+"Janjgir",
+"Champa",
+"Balod",
+"Bemetara",
+"Kondagaon",
+"Sukma",
+"Bijapur",
+"Narayanpur",
+"Balrampur",
+"Surajpur",
+"Gariaband",
+"Mungeli",
+"Baloda Bazar",
+"Dantewada",
+"Pathalgaon",
+"Dongargarh",
+"Pendra"
+
+],
+// ======================================
+// Part 5A-4
+// Goa & Gujarat
+// ======================================
+
+"Goa":[
+
+"Panaji",
+"Margao",
+"Vasco da Gama",
+"Mapusa",
+"Ponda",
+"Bicholim",
+"Curchorem",
+"Canacona",
+"Pernem",
+"Quepem",
+"Sanquelim",
+"Valpoi",
+"Cuncolim",
+"Sanguem",
+"Calangute",
+"Candolim",
+"Colva",
+"Anjuna",
+"Arambol",
+"Old Goa"
+
+],
+
+"Gujarat":[
+
+"Ahmedabad",
+"Surat",
+"Vadodara",
+"Rajkot",
+"Gandhinagar",
+"Bhavnagar",
+"Jamnagar",
+"Junagadh",
+"Anand",
+"Nadiad",
+"Bharuch",
+"Navsari",
+"Valsad",
+"Vapi",
+"Mehsana",
+"Palanpur",
+"Patan",
+"Morbi",
+"Surendranagar",
+"Amreli",
+"Porbandar",
+"Veraval",
+"Godhra",
+"Dahod",
+"Bhuj",
+"Gandhidham",
+"Ankleshwar",
+"Botad",
+"Himmatnagar",
+"Modasa",
+"Kalol",
+"Deesa",
+"Jetpur",
+"Gondal",
+"Dwarka",
+"Somnath",
+"Mundra",
+"Keshod",
+"Lunawada",
+"Vyara"
+
+],
+// ======================================
+// Part 5B-1
+// Haryana & Himachal Pradesh
+// ======================================
+
+"Haryana":[
+
+"Ambala",
+"Bhiwani",
+"Charkhi Dadri",
+"Faridabad",
+"Fatehabad",
+"Gurugram",
+"Hisar",
+"Jhajjar",
+"Jind",
+"Kaithal",
+"Karnal",
+"Kurukshetra",
+"Mahendragarh",
+"Nuh",
+"Palwal",
+"Panchkula",
+"Panipat",
+"Rewari",
+"Rohtak",
+"Sirsa",
+"Sonipat",
+"Yamunanagar",
+"Bahadurgarh",
+"Hansi",
+"Ratia",
+"Tohana",
+"Narnaul",
+"Gohana",
+"Kosli",
+"Safidon"
+
+],
+
+"Himachal Pradesh":[
+
+"Shimla",
+"Dharamshala",
+"Mandi",
+"Solan",
+"Kullu",
+"Manali",
+"Hamirpur",
+"Bilaspur",
+"Chamba",
+"Una",
+"Nahan",
+"Kangra",
+"Palampur",
+"Sundarnagar",
+"Kasauli",
+"Dalhousie",
+"Keylong",
+"Reckong Peo",
+"Rampur Bushahr",
+"Rohru",
+"Jogindernagar",
+"Paonta Sahib",
+"Theog",
+"Arki",
+"Jawalamukhi",
+"Nurpur",
+"Dehra Gopipur",
+"Banjar",
+"Nadaun",
+"Bhuntar"
+
+],
+// ======================================
+// Part 5B-2
+// Jharkhand
+// ======================================
+
+"Jharkhand":[
+
+"Ranchi",
+"Jamshedpur",
+"Dhanbad",
+"Bokaro Steel City",
+"Deoghar",
+"Hazaribagh",
+"Giridih",
+"Ramgarh",
+"Dumka",
+"Medininagar",
+"Chaibasa",
+"Lohardaga",
+"Gumla",
+"Khunti",
+"Simdega",
+"Godda",
+"Pakur",
+"Sahibganj",
+"Jamtara",
+"Koderma",
+"Chatra",
+"Latehar",
+"Garhwa",
+"West Singhbhum",
+"East Singhbhum",
+"Seraikela",
+"Bermo",
+"Phusro",
+"Madhupur",
+"Mihijam"
+
+],
+// ======================================
+// Part 5B-3
+// Karnataka
+// ======================================
+
+"Karnataka":[
+
+"Bengaluru",
+"Mysuru",
+"Mangaluru",
+"Hubballi",
+"Dharwad",
+"Belagavi",
+"Kalaburagi",
+"Ballari",
+"Vijayapura",
+"Shivamogga",
+"Tumakuru",
+"Davanagere",
+"Udupi",
+"Hassan",
+"Mandya",
+"Kolar",
+"Chikkaballapur",
+"Chikkamagaluru",
+"Kodagu",
+"Raichur",
+"Bidar",
+"Yadgir",
+"Koppal",
+"Gadag",
+"Haveri",
+"Bagalkot",
+"Ramanagara",
+"Vijayanagara",
+"Chamarajanagar",
+"Karwar",
+"Sirsi",
+"Bhadravati",
+"Hospet",
+"Madikeri",
+"Sakleshpur",
+"Puttur",
+"Ranebennur",
+"Gokak",
+"Jamkhandi",
+"Sindhanur",
+"Lingasugur",
+"Afzalpur",
+"Sedam",
+"Jewargi",
+"Kundapura",
+"Bhatkal",
+"Sagar",
+"Tiptur",
+"Arsikere",
+"Chitradurga",
+"Harihar",
+"Harapanahalli",
+"Karkala",
+"Moodbidri",
+"Surathkal",
+"Robertsonpet",
+"Nelamangala",
+"Doddaballapur",
+"Kanakapura",
+"Anekal"
+
+],
+// ======================================
+// Part 5C-1
+// Kerala
+// ======================================
+
+"Kerala":[
+
+"Thiruvananthapuram",
+"Kochi",
+"Kozhikode",
+"Thrissur",
+"Kollam",
+"Kannur",
+"Alappuzha",
+"Kottayam",
+"Palakkad",
+"Malappuram",
+"Kasaragod",
+"Idukki",
+"Wayanad",
+"Pathanamthitta",
+"Ernakulam",
+"Kozhencherry",
+"Muvattupuzha",
+"Perumbavoor",
+"Angamaly",
+"Aluva",
+"Kalady",
+"Kothamangalam",
+"North Paravur",
+"Piravom",
+"Tripunithura",
+"Chalakudy",
+"Irinjalakuda",
+"Guruvayur",
+"Kunnamkulam",
+"Kodungallur",
+"Chavakkad",
+"Ottapalam",
+"Shoranur",
+"Mannarkkad",
+"Pattambi",
+"Tirur",
+"Manjeri",
+"Nilambur",
+"Perinthalmanna",
+"Ponnani",
+"Vadakara",
+"Koyilandy",
+"Thalassery",
+"Payyanur",
+"Taliparamba",
+"Mattannur",
+"Nedumangad",
+"Attingal",
+"Varkala",
+"Adoor",
+"Pandalam",
+"Kayamkulam",
+"Cherthala",
+"Haripad",
+"Mavelikkara",
+"Thodupuzha",
+"Sulthan Bathery",
+"Kalpetta",
+"Mananthavady"
+
+],
+// ======================================
+// Part 5C-2
+// Madhya Pradesh
+// ======================================
+
+"Madhya Pradesh":[
+
+"Bhopal",
+"Indore",
+"Jabalpur",
+"Gwalior",
+"Ujjain",
+"Sagar",
+"Rewa",
+"Satna",
+"Ratlam",
+"Dewas",
+"Burhanpur",
+"Khandwa",
+"Khargone",
+"Vidisha",
+"Sehore",
+"Betul",
+"Hoshangabad",
+"Narmadapuram",
+"Chhindwara",
+"Balaghat",
+"Mandsaur",
+"Neemuch",
+"Shivpuri",
+"Guna",
+"Ashoknagar",
+"Tikamgarh",
+"Datia",
+"Morena",
+"Bhind",
+"Sheopur",
+"Raisen",
+"Rajgarh",
+"Shajapur",
+"Agar Malwa",
+"Alirajpur",
+"Barwani",
+"Dhar",
+"Jhabua",
+"Panna",
+"Chhatarpur",
+"Damoh",
+"Katni",
+"Umaria",
+"Shahdol",
+"Anuppur",
+"Dindori",
+"Mandla",
+"Seoni",
+"Singrauli",
+"Sidhi",
+"Narsinghpur",
+"Harda",
+"Pandhurna",
+"Maihar",
+"Itarsi",
+"Pipariya",
+"Mhow",
+"Sanawad",
+"Sarni",
+"Waidhan"
+
+],
+// ======================================
+// Part 5C-3
+// Maharashtra
+// ======================================
+
+"Maharashtra":[
+
+"Mumbai",
+"Navi Mumbai",
+"Thane",
+"Pune",
+"Nagpur",
+"Nashik",
+"Aurangabad",
+"Chhatrapati Sambhajinagar",
+"Kolhapur",
+"Solapur",
+"Satara",
+"Sangli",
+"Jalgaon",
+"Ahmednagar",
+"Amravati",
+"Akola",
+"Yavatmal",
+"Chandrapur",
+"Gondia",
+"Bhandara",
+"Wardha",
+"Gadchiroli",
+"Nanded",
+"Parbhani",
+"Hingoli",
+"Latur",
+"Osmanabad",
+"Dharashiv",
+"Beed",
+"Jalna",
+"Dhule",
+"Nandurbar",
+"Ratnagiri",
+"Sindhudurg",
+"Raigad",
+"Alibag",
+"Palghar",
+"Vasai",
+"Virar",
+"Kalyan",
+"Dombivli",
+"Ulhasnagar",
+"Panvel",
+"Bhiwandi",
+"Malegaon",
+"Igatpuri",
+"Shirdi",
+"Kopargaon",
+"Shrirampur",
+"Baramati",
+"Daund",
+"Karad",
+"Phaltan",
+"Miraj",
+"Ichalkaranji",
+"Pandharpur",
+"Akluj",
+"Washim",
+"Buldhana",
+"Khamgaon",
+"Shegaon",
+"Malkapur",
+"Pusad",
+"Wani",
+"Warora",
+"Ballarpur",
+"Tumsar",
+"Kamptee",
+"Hinganghat",
+"Achalpur",
+"Morshi",
+"Digras",
+"Udgir",
+"Nilanga",
+"Ambajogai",
+"Parli Vaijnath",
+"Manmad",
+"Sinnar",
+"Yeola",
+"Pathardi",
+"Shrigonda",
+"Karjat",
+"Lonavala",
+"Khopoli",
+"Mahad",
+"Dapoli",
+"Chiplun",
+"Sawantwadi",
+"Malvan",
+"Kudal"
+
+],
+// ======================================
+// Part 5D-1
+// Manipur, Meghalaya, Mizoram & Nagaland
+// ======================================
+
+"Manipur":[
+
+"Imphal",
+"Thoubal",
+"Bishnupur",
+"Kakching",
+"Churachandpur",
+"Senapati",
+"Ukhrul",
+"Tamenglong",
+"Jiribam",
+"Kangpokpi",
+"Moreh",
+"Moirang",
+"Nambol",
+"Lilong",
+"Mayang Imphal",
+"Wangjing",
+"Sugnu",
+"Yairipok",
+"Sekmai",
+"Andro"
+
+],
+
+"Meghalaya":[
+
+"Shillong",
+"Tura",
+"Jowai",
+"Nongpoh",
+"Williamnagar",
+"Baghmara",
+"Resubelpara",
+"Mawkyrwat",
+"Nongstoin",
+"Khliehriat",
+"Cherrapunji",
+"Mawsynram",
+"Dawki",
+"Ranikor",
+"Ampati",
+"Songsak",
+"Mendipathar",
+"Byrnihat",
+"Mairang",
+"Mawlai"
+
+],
+
+"Mizoram":[
+
+"Aizawl",
+"Lunglei",
+"Champhai",
+"Kolasib",
+"Serchhip",
+"Mamit",
+"Saiha",
+"Lawngtlai",
+"Khawzawl",
+"Hnahthial",
+"Saitual",
+"Bairabi",
+"Vairengte",
+"Lengpui",
+"Thenzawl",
+"Darlawn",
+"North Vanlaiphai",
+"Zawlnuam",
+"Kawnpui",
+"Biate"
+
+],
+
+"Nagaland":[
+
+"Kohima",
+"Dimapur",
+"Mokokchung",
+"Wokha",
+"Tuensang",
+"Mon",
+"Phek",
+"Zunheboto",
+"Kiphire",
+"Longleng",
+"Peren",
+"Noklak",
+"Chumoukedima",
+"Medziphema",
+"Tseminyu",
+"Pfutsero",
+"Jalukie",
+"Aghunato",
+"Shamator",
+"Meluri"
+
+],
+// ======================================
+// Part 5D-2
+// Odisha & Punjab
+// ======================================
+
+"Odisha":[
+
+"Bhubaneswar",
+"Cuttack",
+"Rourkela",
+"Sambalpur",
+"Berhampur",
+"Puri",
+"Balasore",
+"Baripada",
+"Bhadrak",
+"Jharsuguda",
+"Jeypore",
+"Koraput",
+"Rayagada",
+"Angul",
+"Dhenkanal",
+"Keonjhar",
+"Kendrapara",
+"Jagatsinghpur",
+"Jajpur",
+"Paradeep",
+"Balangir",
+"Bargarh",
+"Sundargarh",
+"Kalahandi",
+"Nabarangpur",
+"Nuapada",
+"Phulbani",
+"Nayagarh",
+"Sonepur",
+"Talcher",
+"Boudh",
+"Deogarh",
+"Aska",
+"Chhatrapur",
+"Kendujhar",
+"Malkangiri",
+"Umerkote",
+"Rairangpur",
+"Khordha",
+"Titilagarh"
+
+],
+
+"Punjab":[
+
+"Amritsar",
+"Ludhiana",
+"Jalandhar",
+"Patiala",
+"Bathinda",
+"Mohali",
+"Pathankot",
+"Hoshiarpur",
+"Kapurthala",
+"Firozpur",
+"Moga",
+"Batala",
+"Abohar",
+"Malerkotla",
+"Sangrur",
+"Barnala",
+"Faridkot",
+"Muktsar",
+"Fazilka",
+"Gurdaspur",
+"Nawanshahr",
+"Rupnagar",
+"Anandpur Sahib",
+"Rajpura",
+"Khanna",
+"Samrala",
+"Nabha",
+"Sunam",
+"Dhuri",
+"Kotkapura",
+"Zirakpur",
+"Kharar",
+"Phagwara",
+"Tarn Taran",
+"Jagraon",
+"Malout",
+"Dasuya",
+"Budhlada",
+"Morinda",
+"Dera Bassi"
+
+],
+// ======================================
+// Part 5D-3
+// Rajasthan
+// ======================================
+
+"Rajasthan":[
+
+"Jaipur",
+"Jodhpur",
+"Udaipur",
+"Kota",
+"Ajmer",
+"Bikaner",
+"Alwar",
+"Bharatpur",
+"Sikar",
+"Pali",
+"Bhilwara",
+"Tonk",
+"Barmer",
+"Chittorgarh",
+"Hanumangarh",
+"Sri Ganganagar",
+"Jhunjhunu",
+"Nagaur",
+"Jaisalmer",
+"Banswara",
+"Dausa",
+"Dholpur",
+"Jhalawar",
+"Karauli",
+"Sawai Madhopur",
+"Rajsamand",
+"Pratapgarh",
+"Sirohi",
+"Bundi",
+"Baran",
+"Churu",
+"Dungarpur",
+"Jalore",
+"Neem Ka Thana",
+"Balotra",
+"Beawar",
+"Didwana",
+"Kekri",
+"Phalodi",
+"Gangapur City",
+"Makrana",
+"Kishangarh",
+"Abu Road",
+"Mount Abu",
+"Nathdwara",
+"Fatehpur",
+"Ladnun",
+"Sujangarh",
+"Ratangarh",
+"Nohar",
+"Rawatbhata",
+"Pilibanga",
+"Raisinghnagar",
+"Anupgarh",
+"Bhadra",
+"Sadulpur",
+"Laxmangarh",
+"Osian",
+"Sojat",
+"Jaitaran"
+
+],
+// ======================================
+// Part 5D-4
+// Sikkim & Tamil Nadu
+// ======================================
+
+"Sikkim":[
+
+"Gangtok",
+"Namchi",
+"Gyalshing",
+"Mangan",
+"Singtam",
+"Rangpo",
+"Jorethang",
+"Nayabazar",
+"Ravangla",
+"Pakyong",
+"Soreng",
+"Rhenock",
+"Rongli",
+"Yuksom",
+"Dikchu",
+"Dentam",
+"Chungthang",
+"Lachen",
+"Lachung",
+"Legship"
+
+],
+
+"Tamil Nadu":[
+
+"Chennai",
+"Coimbatore",
+"Madurai",
+"Tiruchirappalli",
+"Salem",
+"Tirunelveli",
+"Erode",
+"Vellore",
+"Thoothukudi",
+"Dindigul",
+"Thanjavur",
+"Karur",
+"Namakkal",
+"Krishnagiri",
+"Dharmapuri",
+"Ranipet",
+"Tiruppur",
+"Nilgiris",
+"Cuddalore",
+"Villupuram",
+"Kanchipuram",
+"Chengalpattu",
+"Tiruvallur",
+"Kallakurichi",
+"Mayiladuthurai",
+"Nagapattinam",
+"Tenkasi",
+"Virudhunagar",
+"Sivaganga",
+"Ramanathapuram",
+"Pudukkottai",
+"Perambalur",
+"Ariyalur",
+"Tiruvannamalai",
+"Kanniyakumari",
+"Nagercoil",
+"Hosur",
+"Pollachi",
+"Mettupalayam",
+"Ooty",
+"Kodaikanal",
+"Palani",
+"Gobichettipalayam",
+"Udumalaipettai",
+"Avadi",
+"Tambaram",
+"Ambur",
+"Arakkonam",
+"Kumbakonam",
+"Pattukkottai",
+"Thiruvarur",
+"Sirkazhi",
+"Chidambaram",
+"Coonoor",
+"Kotagiri",
+"Paramakudi",
+"Rajapalayam",
+"Sankarankovil",
+"Tiruchendur",
+"Mannargudi"
+
+],
+
+"Telangana":[
+
+"Hyderabad",
+"Secunderabad",
+"Warangal",
+"Nizamabad",
+"Khammam",
+"Karimnagar",
+"Ramagundam",
+"Mahbubnagar",
+"Nalgonda",
+"Adilabad",
+"Suryapet",
+"Miryalaguda",
+"Jagtial",
+"Mancherial",
+"Bhongir",
+"Siddipet",
+"Kothagudem",
+"Wanaparthy",
+"Sangareddy",
+"Medak",
+"Vikarabad",
+"Jangaon",
+"Kamareddy",
+"Kodad",
+"Bodhan",
+"Tandur",
+"Nirmal",
+"Bhainsa",
+"Kagaznagar",
+"Gadwal",
+"Banswada",
+"Bhupalpally",
+"Yellandu",
+"Sircilla",
+"Manuguru",
+"Narayanpet",
+"Bellampally",
+"Achampet",
+"Devarakonda",
+"Kalwakurthy",
+"Zaheerabad",
+"Metpally",
+"Huzurabad",
+"Huzurnagar",
+"Korutla",
+"Armoor",
+"Bhuvanagiri",
+"Choppadandi",
+"Jadcherla",
+"Kothapet",
+"Nagarkurnool",
+"Pargi"
+
+],
+
+"Tripura":[
+
+"Agartala",
+"Udaipur",
+"Dharmanagar",
+"Kailashahar",
+"Belonia",
+"Khowai",
+"Ambassa",
+"Sabroom",
+"Sonamura",
+"Kamalpur",
+"Teliamura",
+"Bishalgarh",
+"Melaghar",
+"Mohanpur",
+"Jirania",
+"Ranirbazar",
+"Boxanagar",
+"Amarpur",
+"Gandhigram",
+"Panisagar"
+
+],
+// ======================================
+// Part 5D-6
+// Uttar Pradesh
+// ======================================
+
+"Uttar Pradesh":[
+
+"Lucknow",
+"Kanpur",
+"Varanasi",
+"Agra",
+"Prayagraj",
+"Noida",
+"Greater Noida",
+"Ghaziabad",
+"Meerut",
+"Aligarh",
+"Bareilly",
+"Moradabad",
+"Saharanpur",
+"Gorakhpur",
+"Jhansi",
+"Mathura",
+"Ayodhya",
+"Faizabad",
+"Firozabad",
+"Muzaffarnagar",
+"Shahjahanpur",
+"Rampur",
+"Etawah",
+"Mainpuri",
+"Budaun",
+"Bulandshahr",
+"Hapur",
+"Amroha",
+"Sambhal",
+"Baghpat",
+"Bijnor",
+"Pilibhit",
+"Lakhimpur Kheri",
+"Sitapur",
+"Hardoi",
+"Unnao",
+"Raebareli",
+"Sultanpur",
+"Amethi",
+"Barabanki",
+"Bahraich",
+"Shrawasti",
+"Balrampur",
+"Gonda",
+"Basti",
+"Sant Kabir Nagar",
+"Siddharthnagar",
+"Maharajganj",
+"Deoria",
+"Kushinagar",
+"Ballia",
+"Mau",
+"Ghazipur",
+"Jaunpur",
+"Mirzapur",
+"Sonbhadra",
+"Chandauli",
+"Bhadohi",
+"Azamgarh",
+"Ambedkar Nagar",
+"Kannauj",
+"Farrukhabad",
+"Auraiya",
+"Jalaun",
+"Lalitpur",
+"Hamirpur",
+"Mahoba",
+"Banda",
+"Chitrakoot",
+"Kasganj",
+"Etah",
+"Hathras",
+"Kaushambi",
+"Pratapgarh",
+"Fatehpur",
+"Shamli",
+
+// Major industrial & educational towns
+
+"Obra",
+"Renukoot",
+"Tanda",
+"Rasra",
+"Robertsganj",
+"Pukhrayan",
+"Orai",
+"Tilhar",
+"Najibabad",
+"Khurja",
+"Modinagar",
+"Dadri",
+"Panki",
+"Shikohabad",
+"Tundla",
+"Vrindavan",
+"Kosi Kalan",
+"Rudrapur"
+
+],
+// ======================================
+// Part 5D-7
+// Uttarakhand & West Bengal
+// ======================================
+
+"Uttarakhand":[
+
+"Dehradun",
+"Haridwar",
+"Rishikesh",
+"Roorkee",
+"Haldwani",
+"Nainital",
+"Rudrapur",
+"Kashipur",
+"Ramnagar",
+"Kotdwar",
+"Pithoragarh",
+"Almora",
+"Bageshwar",
+"Champawat",
+"Pauri",
+"Srinagar",
+"Tehri",
+"New Tehri",
+"Uttarkashi",
+"Mussoorie",
+"Vikasnagar",
+"Kichha",
+"Sitarganj",
+"Gadarpur",
+"Tanakpur",
+"Laksar",
+"Doiwala",
+"Joshimath",
+"Karnaprayag",
+"Gopeshwar"
+
+],
+
+"West Bengal":[
+
+"Kolkata",
+"Howrah",
+"Durgapur",
+"Asansol",
+"Siliguri",
+"Darjeeling",
+"Kharagpur",
+"Haldia",
+"Malda",
+"Bardhaman",
+"Krishnanagar",
+"Berhampore",
+"Jalpaiguri",
+"Alipurduar",
+"Cooch Behar",
+"Raiganj",
+"Balurghat",
+"Bankura",
+"Purulia",
+"Bishnupur",
+"Midnapore",
+"Tamluk",
+"Contai",
+"Diamond Harbour",
+"Barasat",
+"Barrackpore",
+"Kalyani",
+"Nabadwip",
+"Ranaghat",
+"Habra",
+"Bongaon",
+"Basirhat",
+"Chandannagar",
+"Serampore",
+"Uttarpara",
+"Rishra",
+"Hooghly",
+"Arambagh",
+"Jhargram",
+"Bolpur",
+"Santiniketan",
+"Suri",
+"Rampurhat",
+"Kakdwip",
+"Kalimpong",
+"Islampur",
+"Memari",
+"Katwa",
+"Dinhata",
+"Falakata"
+
+],
+// ======================================
+// Part 5D-8
+// Union Territories
+// ======================================
+
+"Andaman and Nicobar Islands":[
+
+"Port Blair",
+"Diglipur",
+"Mayabunder",
+"Rangat",
+"Ferrargunj",
+"Garacharma",
+"Bambooflat",
+"Hut Bay",
+"Little Andaman",
+"Car Nicobar"
+
+],
+
+"Chandigarh":[
+
+"Chandigarh"
+
+],
+
+"Dadra and Nagar Haveli and Daman and Diu":[
+
+"Daman",
+"Diu",
+"Silvassa",
+"Naroli",
+"Amli",
+"Khanvel",
+"Rakholi",
+"Samarvarni",
+"Kachigam",
+"Dabhel"
+
+],
+
+"Delhi":[
+
+"New Delhi",
+"Central Delhi",
+"North Delhi",
+"South Delhi",
+"East Delhi",
+"West Delhi",
+"North East Delhi",
+"North West Delhi",
+"South East Delhi",
+"South West Delhi",
+"Shahdara",
+"Dwarka",
+"Rohini",
+"Pitampura",
+"Karol Bagh",
+"Lajpat Nagar",
+"Saket",
+"Vasant Kunj",
+"Janakpuri",
+"Mayur Vihar"
+
+],
+
+"Jammu and Kashmir":[
+
+"Srinagar",
+"Jammu",
+"Anantnag",
+"Baramulla",
+"Kupwara",
+"Pulwama",
+"Shopian",
+"Budgam",
+"Ganderbal",
+"Bandipora",
+"Sopore",
+"Kathua",
+"Udhampur",
+"Reasi",
+"Doda",
+"Kishtwar",
+"Ramban",
+"Rajouri",
+"Poonch",
+"Samba"
+
+],
+
+"Ladakh":[
+
+"Leh",
+"Kargil",
+"Nubra",
+"Diskit",
+"Padum",
+"Drass",
+"Tangtse",
+"Nyoma",
+"Khaltsi",
+"Shey"
+
+],
+
+"Lakshadweep":[
+
+"Kavaratti",
+"Agatti",
+"Amini",
+"Andrott",
+"Bitra",
+"Chetlat",
+"Kadmat",
+"Kalpeni",
+"Kiltan",
+"Minicoy"
+
+],
+
+"Puducherry":[
+
+"Puducherry",
+"Karaikal",
+"Mahe",
+"Yanam",
+"Villianur",
+"Bahour",
+"Nettapakkam",
+"Ariyankuppam",
+"Oulgaret",
+"Thirunallar"
+
+]
+
+};
+
+
+// ======================================
+// Part 6
+// Dynamic State -> City Dropdown
+// ======================================
+
+const stateSelect = document.getElementById("state");
+const citySelect = document.getElementById("city");
+
+stateSelect.addEventListener("change", function () {
+
+    const selectedState = this.value;
+
+    // Clear previous cities
+    citySelect.innerHTML = "";
+
+    // Default option
+    const defaultOption = document.createElement("option");
+    defaultOption.value = "";
+    defaultOption.textContent = "Select City";
+    citySelect.appendChild(defaultOption);
+
+    // Populate cities
+    if (stateCityData[selectedState]) {
+
+        stateCityData[selectedState].forEach(function(city){
+
+            const option = document.createElement("option");
+
+            option.value = city;
+            option.textContent = city;
+
+            citySelect.appendChild(option);
+
+        });
+
+    }
+
+});
+
+// ======================================
+// Name Validation
+// ======================================
+
+const nameInput = document.getElementById("name");
+
+nameInput.addEventListener("input", function(){
+
+    this.value = this.value.replace(/[^A-Za-z ]/g,'');
+
+});
+
+// ======================================
+// Phone Validation
+// ======================================
+
+phone.addEventListener("keypress", function(e){
+
+    if(!/[0-9]/.test(e.key)){
+
+        e.preventDefault();
+
+    }
+
+});
+
+phone.addEventListener("input", function(){
+
+    if(this.value.length > 10){
+
+        this.value = this.value.slice(0,10);
+
+    }
+
+});
+
+// ======================================
+// Weight Limit
+// ======================================
+
+weight.setAttribute("min","50");
+weight.setAttribute("max","150");
+
+// ======================================
+// Age Limit
+// ======================================
+
+age.setAttribute("min","18");
+age.setAttribute("max","65");
+
+// ======================================
+// Hemoglobin Limit
+// ======================================
+
+hemoglobin.setAttribute("min","0");
+hemoglobin.setAttribute("step","0.1");
+
+// ======================================
+// Success Message
+// ======================================
+
+donorForm.addEventListener("submit",function(){
+
+    alert("🎉 Thank you for registering as a Blood Donor!");
+
+});
+
+// ======================================
+// End of Script
+// ======================================
+</script>
+
+</body>
+</html>
+

@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Blood Requests - BloodConnect</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body{
+            background: #f5f7fb;
+            font-family: Arial, sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Navbar */
+
+        .navbar{
+            background: linear-gradient(to right, #990000, #e60000);
+            padding: 15px 0;
+        }
+
+        .navbar-brand{
+            color: white !important;
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        .nav-link{
+            color: white !important;
+            margin-left: 20px;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        /* Hero Section */
+
+        .hero-section{
+            background:
+                linear-gradient(rgba(0,0,0,0.70), rgba(0,0,0,0.70)),
+                url('https://images.unsplash.com/photo-1615461066841-6116e61058f4?q=80&w=1600&auto=format&fit=crop');
+
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 110px 20px 180px;
+        }
+
+        .hero-section h1{
+            font-size: 70px;
+            font-weight: bold;
+        }
+
+        .hero-section p{
+            font-size: 22px;
+            margin-top: 20px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.7;
+        }
+
+        /* Request List Card */
+
+        .request-card{
+            background: white;
+            margin-top: -90px;
+            border-radius: 30px;
+            padding: 50px;
+            box-shadow: 0px 10px 30px rgba(0,0,0,0.12);
+            position: relative;
+            z-index: 100;
+        }
+
+        .request-title{
+            text-align: center;
+            color: #e6005c;
+            font-size: 50px;
+            font-weight: bold;
+            margin-bottom: 40px;
+        }
+
+        /* Search */
+
+        .search-box{
+            margin-bottom: 35px;
+        }
+
+        .search-box input{
+            height: 55px;
+            border-radius: 12px;
+            border: 1px solid #ddd;
+            padding-left: 20px;
+            font-size: 16px;
+        }
+
+        /* Table */
+
+        .table{
+            vertical-align: middle;
+        }
+
+        .table th{
+            color: #555;
+            font-size: 17px;
+            padding: 18px;
+        }
+
+        .table td{
+            padding: 18px;
+            font-size: 16px;
+            color: #444;
+        }
+
+        .table tbody tr{
+            transition: 0.3s;
+        }
+
+        .table tbody tr:hover{
+            background: #fff5f7;
+        }
+
+        /* Blood Group Badge */
+
+        .blood-badge{
+            background: #ff4d6d;
+            color: white;
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        /* Units Badge */
+
+        .units-badge{
+            background: #007bff;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        /* Buttons */
+
+        .btn-edit{
+            background: #ffc107;
+            border: none;
+            color: black;
+            padding: 8px 18px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-decoration: none;
+            margin-right: 8px;
+        }
+
+        .btn-delete{
+            background: #ff4d6d;
+            border: none;
+            color: white;
+            padding: 8px 18px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .btn-edit:hover{
+            background: #e0a800;
+            color: black;
+        }
+
+        .btn-delete:hover{
+            background: #d90429;
+            color: white;
+        }
+
+        /* Empty Message */
+
+        .empty-message{
+            text-align: center;
+            padding: 40px;
+            color: #777;
+            font-size: 20px;
+        }
+
+        /* Footer */
+
+        footer{
+            background: #111;
+            color: white;
+            text-align: center;
+            padding: 50px 20px;
+            margin-top: 90px;
+        }
+
+        footer h4{
+            font-size: 32px;
+            margin-bottom: 15px;
+        }
+
+        footer p{
+            color: #ccc;
+            margin-bottom: 8px;
+        }
+
+        /* Responsive */
+
+        @media(max-width:768px){
+
+            .hero-section h1{
+                font-size: 45px;
+            }
+
+            .hero-section p{
+                font-size: 18px;
+            }
+
+            .request-card{
+                padding: 25px;
+            }
+
+            .request-title{
+                font-size: 35px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<!-- Navbar -->
+
+<nav class="navbar navbar-expand-lg">
+
+    <div class="container">
+
+        <a class="navbar-brand" href="/">
+            BloodConnect
+        </a>
+
+        <div>
+
+            <a href="/" class="nav-link d-inline">
+                Home
+            </a>
+
+            <a href="/donors/" class="nav-link d-inline">
+                Donors
+            </a>
+
+            <a href="/blood-request/" class="nav-link d-inline">
+                Blood Request
+            </a>
+
+        </div>
+
+    </div>
+
+</nav>
+
+<!-- Hero Section -->
+
+<section class="hero-section">
+
+    <div class="container">
+
+        <h1>Emergency Blood Requests</h1>
+
+        <p>
+            View all blood requests from hospitals and patients.
+            Help save lives by connecting donors with urgent blood needs.
+        </p>
+
+    </div>
+
+</section>
+
+<!-- Request List -->
+
+<div class="container">
+
+    <div class="request-card">
+
+        <h2 class="request-title">
+            Blood Request List
+        </h2>
+
+        <!-- Search -->
+
+        <div class="search-box">
+
+            <input type="text"
+                   id="searchInput"
+                   class="form-control"
+                   placeholder="Search by patient name, blood group or city...">
+
+        </div>
+
+        <!-- Table -->
+
+        <div class="table-responsive">
+
+            <table class="table align-middle">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Patient Name</th>
+                        <th>Blood Group</th>
+                        <th>Units</th>
+                        <th>Hospital</th>
+                        <th>City</th>
+                        <th>Contact</th>
+                        <th>Actions</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="requestTable">
+
+                    {% for request in requests %}
+
+                    <tr>
+
+                        <td>
+                            {{ request.patient_name }}
+                        </td>
+
+                        <td>
+                            <span class="blood-badge">
+                                {{ request.blood_group }}
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="units-badge">
+                                {{ request.units_required }} Units
+                            </span>
+                        </td>
+
+                        <td>
+                            {{ request.hospital_name }}
+                        </td>
+
+                        <td>
+                            {{ request.city }}
+                        </td>
+
+                        <td>
+                            {{ request.contact_number }}
+                        </td>
+
+                        <td>
+
+                        {% if user.is_superuser %}
+
+                            <a href="/update-request/{{ request.id }}/"
+                               class="btn-edit">
+
+                                Edit
+
+                            </a>
+
+                            <a href="/delete-request/{{ request.id }}/"
+                               class="btn-delete"
+                               onclick="return confirm('Are you sure you want to delete this request?')">
+
+                                Delete
+
+                            </a>
+
+                        {% else %}
+
+                            <span class="text-success fw-bold">
+                                View Only
+                            </span>
+
+                        {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="7">
+
+                            <div class="empty-message">
+
+                                No blood requests found.
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Footer -->
+
+<footer>
+
+    <h4>BloodConnect</h4>
+
+    <p>
+        Donate Blood • Save Lives • Spread Humanity
+    </p>
+
+    <p>
+        Emergency Blood Donation Platform
+    </p>
+
+    <p class="mb-0">
+        © 2026 BloodConnect. All Rights Reserved.
+    </p>
+
+</footer>
+
+<!-- Search Script -->
+
+<script>
+
+    const searchInput = document.getElementById("searchInput");
+
+    searchInput.addEventListener("keyup", function(){
+
+        let filter = searchInput.value.toLowerCase();
+
+        let rows = document.querySelectorAll("#requestTable tr");
+
+        rows.forEach(function(row){
+
+            let text = row.innerText.toLowerCase();
+
+            if(text.includes(filter)){
+                row.style.display = "";
+            }
+            else{
+                row.style.display = "none";
+            }
+
+        });
+
+    });
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Update Donor - BloodConnect</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body{
+            background: #f5f7fb;
+            font-family: Arial, sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Navbar */
+
+        .navbar{
+            background: linear-gradient(to right, #990000, #e60000);
+            padding: 15px 0;
+        }
+
+        .navbar-brand{
+            color: white !important;
+            font-size: 32px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .nav-link{
+            color: white !important;
+            margin-left: 20px;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        /* Hero Section */
+
+        .hero-section{
+            background:
+                linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)),
+                url('https://images.unsplash.com/photo-1615461066841-6116e61058f4?q=80&w=1600&auto=format&fit=crop');
+
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 120px 20px;
+            text-align: center;
+        }
+
+        .hero-section h1{
+            font-size: 55px;
+            font-weight: bold;
+        }
+
+        .hero-section p{
+            font-size: 20px;
+            margin-top: 15px;
+        }
+
+        /* Form Card */
+
+        .form-card{
+            background: white;
+            border-radius: 20px;
+            padding: 45px;
+            box-shadow: 0px 8px 25px rgba(0,0,0,0.1);
+            margin-top: -70px;
+            position: relative;
+            z-index: 100;
+        }
+
+        .section-title{
+            color: #c40000;
+            font-weight: bold;
+            margin-bottom: 35px;
+            text-align: center;
+            font-size: 45px;
+        }
+
+        label{
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #444;
+        }
+
+        .form-control,
+        .form-select{
+            height: 52px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+        }
+
+        textarea{
+            height: auto !important;
+            border-radius: 10px !important;
+        }
+
+        .btn-danger{
+            background: #c40000;
+            border: none;
+            padding: 13px 40px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+
+        .btn-danger:hover{
+            background: #8f0000;
+            transform: scale(1.03);
+        }
+
+        .warning-text{
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+            font-weight: 500;
+        }
+
+        /* Footer */
+
+        footer{
+            background: #111;
+            color: white;
+            padding: 40px 20px;
+            margin-top: 80px;
+            text-align: center;
+        }
+
+        footer h4{
+            font-size: 30px;
+            margin-bottom: 15px;
+        }
+
+        footer p{
+            margin-bottom: 8px;
+            color: #ccc;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<!-- Navbar -->
+
+<nav class="navbar navbar-expand-lg">
+
+    <div class="container">
+
+        <a class="navbar-brand" href="/">
+            BloodConnect
+        </a>
+
+        <div>
+
+            <a href="/" class="nav-link d-inline">
+                Home
+            </a>
+
+            <a href="/donors/" class="nav-link d-inline">
+                Donors
+            </a>
+
+        </div>
+
+    </div>
+
+</nav>
+
+<!-- Hero Section -->
+
+<section class="hero-section">
+
+    <div class="container">
+
+        <h1>Update Donor Details</h1>
+
+        <p>
+            Keep donor information accurate and updated for emergency support.
+        </p>
+
+    </div>
+
+</section>
+
+<!-- Update Form -->
+
+<div class="container">
+
+    <div class="form-card">
+
+        <h2 class="section-title">
+            Blood Donor Registration
+        </h2>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <div class="row">
+
+                <!-- Full Name -->
+
+                <div class="col-md-6 mb-4">
+
+                    <label>Full Name</label>
+
+                    <input type="text"
+                           name="name"
+                           value="{{ donor.name }}"
+                           class="form-control"
+                           placeholder="Enter Full Name"
+                           required>
+
+                </div>
+
+                <!-- Gender -->
+
+                <div class="col-md-6 mb-4">
+
+                    <label>Gender</label>
+
+                    <select name="gender"
+                            class="form-select"
+                            required>
+
+                        <option value="{{ donor.gender }}">
+                            {{ donor.gender }}
+                        </option>
+
+                        <option>Male</option>
+                        <option>Female</option>
+                        <option>Other</option>
+
+                    </select>
+
+                </div>
+
+                <!-- Age -->
+
+                <div class="col-md-4 mb-4">
+
+                    <label>Age</label>
+
+                    <input type="number"
+                           id="age"
+                           name="age"
+                           value="{{ donor.age }}"
+                           class="form-control"
+                           required>
+
+                    <div class="warning-text" id="ageWarning">
+                        Minimum age should be 18.
+                    </div>
+
+                </div>
+
+                <!-- Blood Group -->
+
+                <div class="col-md-4 mb-4">
+
+                    <label>Blood Group</label>
+
+                    <select name="blood_group"
+                            class="form-select"
+                            required>
+
+                        <option value="{{ donor.blood_group }}">
+                            {{ donor.blood_group }}
+                        </option>
+
+                        <option>A+</option>
+                        <option>A-</option>
+                        <option>B+</option>
+                        <option>B-</option>
+                        <option>O+</option>
+                        <option>O-</option>
+                        <option>AB+</option>
+                        <option>AB-</option>
+
+                    </select>
+
+                </div>
+
+                <!-- Weight -->
+
+                <div class="col-md-4 mb-4">
+
+                    <label>Weight (KG)</label>
+
+                    <input type="number"
+                           step="0.1"
+                           id="weight"
+                           name="weight"
+                           value="{{ donor.weight }}"
+                           class="form-control"
+                           required>
+
+                    <div class="warning-text" id="weightWarning">
+                        Minimum weight should be 50 KG.
+                    </div>
+
+                </div>
+
+                <!-- Phone -->
+
+                <div class="col-md-6 mb-4">
+
+                    <label>Phone Number</label>
+
+                    <input type="text"
+                           id="phone"
+                           name="phone"
+                           value="{{ donor.phone }}"
+                           class="form-control"
+                           maxlength="10"
+                           placeholder="Enter 10 Digit Phone Number"
+                           required>
+
+                    <div class="warning-text" id="phoneWarning">
+                        Phone number must contain exactly 10 digits only.
+                    </div>
+
+                </div>
+
+                <!-- Hemoglobin -->
+
+                <div class="col-md-6 mb-4">
+
+                    <label>Hemoglobin Level</label>
+
+                    <input type="number"
+                           step="0.1"
+                           id="hemoglobin"
+                           name="hemoglobin"
+                           value="{{ donor.hemoglobin }}"
+                           class="form-control"
+                           required>
+
+                    <div class="warning-text" id="hemoWarning">
+                        Hemoglobin is too low for donation.
+                    </div>
+
+                </div>
+
+                <!-- City -->
+
+                <div class="col-md-6 mb-4">
+
+                    <label>City</label>
+
+                    <select name="city"
+                            class="form-select"
+                            required>
+
+                        <option value="{{ donor.city }}">
+                            {{ donor.city }}
+                        </option>
+
+                        <option>Hyderabad</option>
+                        <option>Warangal</option>
+                        <option>Karimnagar</option>
+                        <option>Nizamabad</option>
+                        <option>Khammam</option>
+
+                    </select>
+
+                </div>
+
+                <!-- State -->
+
+                <div class="col-md-6 mb-4">
+
+                    <label>State</label>
+
+                    <select name="state"
+                            class="form-select"
+                            required>
+
+                        <option value="{{ donor.state }}">
+                            {{ donor.state }}
+                        </option>
+
+                        <option>Telangana</option>
+                        <option>Andhra Pradesh</option>
+                        <option>Karnataka</option>
+                        <option>Tamil Nadu</option>
+                        <option>Maharashtra</option>
+
+                    </select>
+
+                </div>
+
+                <!-- Last Donation Date -->
+
+                <div class="col-md-6 mb-4">
+
+                    <label>Last Donation Date</label>
+
+                    <input type="date"
+                           id="donationDate"
+                           name="last_donation_date"
+                           value="{{ donor.last_donation_date|date:'Y-m-d' }}"
+                           class="form-control"
+                           required>
+
+                    <div class="warning-text" id="dateWarning">
+                        You must wait 3 months before donating again.
+                    </div>
+
+                </div>
+
+                <!-- Health Issues -->
+
+                <div class="col-md-6 mb-4">
+
+                    <label>Health Issues (Optional)</label>
+
+                    <textarea
+                        id="healthIssues"
+                        name="health_issues"
+                        class="form-control"
+                        rows="3"
+                        placeholder="Example: diabetes, fever, heart problem">{{ donor.health_issues }}</textarea>
+
+                    <div class="warning-text" id="healthWarning">
+                        This health condition may make you ineligible for donation.
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Button -->
+
+            <div class="text-center mt-3">
+
+                <button type="submit"
+                        class="btn btn-danger">
+
+                    Update Donor
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<!-- Footer -->
+
+<footer>
+
+    <h4>BloodConnect</h4>
+
+    <p>
+        Donate Blood • Save Lives • Spread Humanity
+    </p>
+
+    <p class="mb-0">
+        © 2026 BloodConnect. All Rights Reserved.
+    </p>
+
+</footer>
+
+<!-- Validation Script -->
+
+<script>
+
+    // Age Validation
+
+    document.getElementById("age").addEventListener("input", function(){
+
+        let age = this.value;
+
+        if(age < 18){
+            document.getElementById("ageWarning").style.display = "block";
+        }
+        else{
+            document.getElementById("ageWarning").style.display = "none";
+        }
+
+    });
+
+    // Weight Validation
+
+    document.getElementById("weight").addEventListener("input", function(){
+
+        let weight = this.value;
+
+        if(weight < 50){
+            document.getElementById("weightWarning").style.display = "block";
+        }
+        else{
+            document.getElementById("weightWarning").style.display = "none";
+        }
+
+    });
+
+    // Hemoglobin Validation
+
+    document.getElementById("hemoglobin").addEventListener("input", function(){
+
+        let hemo = this.value;
+
+        if(hemo < 12.5){
+            document.getElementById("hemoWarning").style.display = "block";
+        }
+        else{
+            document.getElementById("hemoWarning").style.display = "none";
+        }
+
+    });
+
+    // Phone Number Validation
+
+    document.getElementById("phone").addEventListener("input", function(){
+
+        this.value = this.value.replace(/[^0-9]/g, '');
+
+        let phone = this.value;
+
+        if(phone.length != 10){
+            document.getElementById("phoneWarning").style.display = "block";
+        }
+        else{
+            document.getElementById("phoneWarning").style.display = "none";
+        }
+
+    });
+
+    // Last Donation Date Validation
+
+    document.getElementById("donationDate").addEventListener("change", function(){
+
+        let selectedDate = new Date(this.value);
+        let today = new Date();
+
+        let difference = today - selectedDate;
+
+        let days = difference / (1000 * 60 * 60 * 24);
+
+        if(days < 90){
+            document.getElementById("dateWarning").style.display = "block";
+        }
+        else{
+            document.getElementById("dateWarning").style.display = "none";
+        }
+
+    });
+
+    // Health Issues Validation
+
+    document.getElementById("healthIssues").addEventListener("input", function(){
+
+        let health = this.value.toLowerCase();
+
+        let seriousIssues = [
+            "heart",
+            "cancer",
+            "hiv",
+            "aids",
+            "hepatitis",
+            "kidney",
+            "stroke",
+            "anemia",
+            "infection",
+            "fever"
+        ];
+
+        let found = seriousIssues.some(issue => health.includes(issue));
+
+        if(found){
+            document.getElementById("healthWarning").style.display = "block";
+        }
+        else{
+            document.getElementById("healthWarning").style.display = "none";
+        }
+
+    });
+
+</script>
+
+</body>
+</html>

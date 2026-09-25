@@ -1,0 +1,1990 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Blood Request - BloodConnect</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body{
+            background: #f5f7fb;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Navbar */
+
+        .navbar{
+            background: linear-gradient(to right, #990000, #e60000);
+            padding: 15px 0;
+        }
+
+        .navbar-brand{
+            color: white !important;
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .nav-link{
+            color: white !important;
+            margin-left: 20px;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        /* Hero Section */
+
+        .hero-section{
+            background:
+            linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)),
+            url('https://images.unsplash.com/photo-1584515933487-779824d29309?q=80&w=1600&auto=format&fit=crop');
+
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 120px 20px;
+        }
+
+        .hero-section h1{
+            font-size: 55px;
+            font-weight: bold;
+        }
+
+        .hero-section p{
+            font-size: 20px;
+            margin-top: 15px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Form Section */
+
+        .request-card{
+            background: white;
+            border-radius: 20px;
+            padding: 45px;
+            box-shadow: 0px 8px 25px rgba(0,0,0,0.1);
+            margin-top: -70px;
+            position: relative;
+            z-index: 100;
+        }
+
+        .section-title{
+            color: #c40000;
+            font-weight: bold;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        label{
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .form-control,
+        .form-select{
+            height: 50px;
+            border-radius: 10px;
+        }
+
+        .btn-danger{
+            background: #c40000;
+            border: none;
+            padding: 13px 40px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+
+        .btn-danger:hover{
+            background: #8f0000;
+            transform: scale(1.03);
+        }
+
+        .warning-text{
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        /* Info Section */
+
+        .info-section{
+            margin-top: 70px;
+        }
+
+        .info-card{
+            background: white;
+            padding: 30px;
+            border-radius: 18px;
+            text-align: center;
+            box-shadow: 0px 5px 15px rgba(0,0,0,0.08);
+            height: 100%;
+            transition: 0.3s;
+        }
+
+        .info-card:hover{
+            transform: translateY(-8px);
+        }
+
+        .info-card h4{
+            color: #c40000;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .info-card p{
+            color: #555;
+            line-height: 1.7;
+        }
+
+        /* Footer */
+
+        footer{
+            background: #111;
+            color: white;
+            text-align: center;
+            padding: 50px 20px;
+            margin-top: 80px;
+        }
+
+        footer h4{
+            font-size: 30px;
+            margin-bottom: 15px;
+        }
+
+        footer p{
+            color: #ccc;
+            margin-bottom: 8px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<!-- Navbar -->
+
+<nav class="navbar navbar-expand-lg">
+
+    <div class="container">
+
+        <a class="navbar-brand" href="/">
+            BloodConnect
+        </a>
+
+        <div>
+
+            <a href="/" class="nav-link d-inline">
+                Home
+            </a>
+
+            <a href="/donors/" class="nav-link d-inline">
+                Donors
+            </a>
+
+        </div>
+
+    </div>
+
+</nav>
+
+<!-- Hero Section -->
+
+<section class="hero-section">
+
+    <div class="container">
+
+        <h1>Request Blood Instantly</h1>
+
+        <p>
+            Blood emergencies can happen anytime.
+            Submit your blood request quickly and connect with available donors nearby.
+        </p>
+
+    </div>
+
+</section>
+
+<!-- Form Section -->
+
+<div class="container">
+
+    <div class="request-card">
+
+        <h2 class="section-title">
+            Blood Request Form
+        </h2>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <div class="row">
+
+                <!-- Patient Name -->
+
+                <div class="col-md-6 mb-4">
+
+                    <label>Patient Name</label>
+
+                    <input type="text"
+                           name="patient_name"
+                           class="form-control"
+                           placeholder="Enter Patient Name"
+                           required>
+
+                </div>
+
+                <!-- Blood Group -->
+
+                <div class="col-md-6 mb-4">
+
+                    <label>Blood Group</label>
+
+                    <select name="blood_group"
+                            class="form-select"
+                            required>
+
+                        <option value="">Select Blood Group</option>
+
+                        <option>A+</option>
+                        <option>A-</option>
+                        <option>B+</option>
+                        <option>B-</option>
+                        <option>O+</option>
+                        <option>O-</option>
+                        <option>AB+</option>
+                        <option>AB-</option>
+
+                    </select>
+
+                </div>
+
+                <!-- Units Required -->
+
+                <div class="col-md-6 mb-4">
+
+                    <label>Units Required</label>
+
+                    <input type="number"
+                           id="units"
+                           name="units_required"
+                           class="form-control"
+                           placeholder="Enter Units Required"
+                           required>
+
+                    <div class="warning-text" id="unitsWarning">
+                        Units should be greater than 0.
+                    </div>
+
+                </div>
+
+                <!-- Hospital Name -->
+
+                <div class="col-md-6 mb-4">
+
+                    <label>Hospital Name</label>
+
+                    <input type="text"
+                           name="hospital_name"
+                           class="form-control"
+                           placeholder="Enter Hospital Name"
+                           required>
+
+                </div>
+
+                <!-- State -->
+
+                <div class="col-md-6 mb-4">
+
+                    <label>State / Union Territory</label>
+
+                    <select name="state"
+                            id="state"
+                            class="form-select"
+                            required>
+
+                        <option value="">Select State / Union Territory</option>
+                        <option value="Andhra Pradesh">Andhra Pradesh</option>
+                        <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                        <option value="Assam">Assam</option>
+                        <option value="Bihar">Bihar</option>
+                        <option value="Chhattisgarh">Chhattisgarh</option>
+                        <option value="Goa">Goa</option>
+                        <option value="Gujarat">Gujarat</option>
+                        <option value="Haryana">Haryana</option>
+                        <option value="Himachal Pradesh">Himachal Pradesh</option>
+                        <option value="Jharkhand">Jharkhand</option>
+                        <option value="Karnataka">Karnataka</option>
+                        <option value="Kerala">Kerala</option>
+                        <option value="Madhya Pradesh">Madhya Pradesh</option>
+                        <option value="Maharashtra">Maharashtra</option>
+                        <option value="Manipur">Manipur</option>
+                        <option value="Meghalaya">Meghalaya</option>
+                        <option value="Mizoram">Mizoram</option>
+                        <option value="Nagaland">Nagaland</option>
+                        <option value="Odisha">Odisha</option>
+                        <option value="Punjab">Punjab</option>
+                        <option value="Rajasthan">Rajasthan</option>
+                        <option value="Sikkim">Sikkim</option>
+                        <option value="Tamil Nadu">Tamil Nadu</option>
+                        <option value="Telangana">Telangana</option>
+                        <option value="Tripura">Tripura</option>
+                        <option value="Uttar Pradesh">Uttar Pradesh</option>
+                        <option value="Uttarakhand">Uttarakhand</option>
+                        <option value="West Bengal">West Bengal</option>
+
+                        <!-- Union Territories -->
+
+                        <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+                        <option value="Chandigarh">Chandigarh</option>
+                        <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and Diu</option>
+                        <option value="Delhi">Delhi (NCT)</option>
+                        <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                        <option value="Ladakh">Ladakh</option>
+                        <option value="Lakshadweep">Lakshadweep</option>
+                        <option value="Puducherry">Puducherry</option>
+
+                    </select>
+
+                </div>
+
+                <!-- City -->
+
+                <div class="col-md-6 mb-4">
+
+                    <label>City</label>
+
+                    <select name="city"
+                            id="city"
+                            class="form-select"
+                            required>
+
+                        <option value="">Select State First</option>
+
+                    </select>
+
+                </div>
+
+                <!-- Contact Number -->
+
+                <div class="col-md-6 mb-4">
+
+                    <label>Contact Number</label>
+
+                    <input type="text"
+                           id="phone"
+                           name="contact_number"
+                           class="form-control"
+                           placeholder="Enter 10 Digit Number"
+                           maxlength="10"
+                           required>
+
+                    <div class="warning-text" id="phoneWarning">
+                        Contact number must contain exactly 10 digits.
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="text-center">
+
+                <button type="submit"
+                        class="btn btn-danger">
+
+                    Submit Request
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<!-- Info Cards -->
+
+<section class="container info-section">
+
+    <div class="row g-4">
+
+        <div class="col-md-4">
+
+            <div class="info-card">
+
+                <h4>Fast Response</h4>
+
+                <p>
+                    Quickly connect with blood donors
+                    during emergency situations and save valuable time.
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="info-card">
+
+                <h4>Emergency Support</h4>
+
+                <p>
+                    BloodConnect provides support
+                    for hospitals, surgeries, and emergency treatments.
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="info-card">
+
+                <h4>Save Lives</h4>
+
+                <p>
+                    Your blood request can help
+                    patients receive life-saving treatment at the right time.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- Footer -->
+
+<footer>
+
+    <h4>BloodConnect</h4>
+
+    <p>
+        Emergency Blood Donation Platform
+    </p>
+
+    <p>
+        Donate Blood • Save Lives • Spread Humanity
+    </p>
+
+    <p class="mb-0">
+        © 2026 BloodConnect. All Rights Reserved.
+    </p>
+
+</footer>
+
+<!-- Validation Script -->
+
+<script>
+
+    // Phone Validation
+
+    document.getElementById("phone").addEventListener("input", function(){
+
+        this.value = this.value.replace(/[^0-9]/g, '');
+
+        let phone = this.value;
+
+        if(phone.length !== 10){
+            document.getElementById("phoneWarning").style.display = "block";
+        }
+        else{
+            document.getElementById("phoneWarning").style.display = "none";
+        }
+
+    });
+
+    // Units Validation
+
+    document.getElementById("units").addEventListener("input", function(){
+
+        let units = this.value;
+
+        if(units <= 0){
+            document.getElementById("unitsWarning").style.display = "block";
+        }
+        else{
+            document.getElementById("unitsWarning").style.display = "none";
+        }
+
+    });
+
+    // ======================================
+    // STATE -> CITY DATA
+    // ======================================
+
+    const stateCityData = {
+
+"Andhra Pradesh":[
+
+"Anantapur",
+"Anakapalle",
+"Alluri Sitharama Raju",
+"Bapatla",
+"Chittoor",
+"East Godavari",
+"Eluru",
+"Guntur",
+"Kakinada",
+"Konaseema",
+"Krishna",
+"Kurnool",
+"Nandyal",
+"NTR",
+"Palnadu",
+"Parvathipuram Manyam",
+"Prakasam",
+"Srikakulam",
+"Sri Potti Sriramulu Nellore",
+"Tirupati",
+"Visakhapatnam",
+"Vizianagaram",
+"West Godavari",
+"YSR Kadapa",
+"Vijayawada",
+"Nellore",
+"Rajahmundry",
+"Kadapa",
+"Ongole",
+"Machilipatnam",
+"Tenali",
+"Narasaraopet",
+"Bhimavaram",
+"Tadepalligudem",
+"Proddatur",
+"Adoni",
+"Madanapalle",
+"Hindupur",
+"Amalapuram",
+"Gudivada",
+"Chilakaluripet",
+"Dharmavaram",
+"Palakollu",
+"Tanuku",
+"Rayachoti",
+"Puttur",
+"Naidupeta",
+"Kavali",
+"Markapur",
+"Ponnur",
+"Repalle",
+"Mangalagiri",
+"Yemmiganur",
+"Kadiri",
+"Gooty",
+"Tuni",
+"Samalkot",
+"Jammalamadugu",
+"Pulivendula",
+"Sattenapalle",
+"Vinukonda",
+"Ichchapuram",
+"Nuzvid"
+
+],
+
+"Arunachal Pradesh":[
+
+"Itanagar",
+"Naharlagun",
+"Tawang",
+"Bomdila",
+"Ziro",
+"Pasighat",
+"Aalo",
+"Tezu",
+"Roing",
+"Khonsa",
+"Changlang",
+"Namsai",
+"Seppa",
+"Daporijo",
+"Yingkiong",
+"Anini",
+"Basar",
+"Longding",
+"Hawai",
+"Dirang"
+
+],
+
+"Assam":[
+
+"Guwahati",
+"Dibrugarh",
+"Silchar",
+"Jorhat",
+"Nagaon",
+"Tezpur",
+"Tinsukia",
+"Goalpara",
+"Dhubri",
+"Sivasagar",
+"Golaghat",
+"Karimganj",
+"Hailakandi",
+"North Lakhimpur",
+"Mangaldoi",
+"Barpeta",
+"Nalbari",
+"Kokrajhar",
+"Bongaigaon",
+"Morigaon",
+"Dhemaji",
+"Biswanath Chariali",
+"Lumding",
+"Hojai",
+"Sonari",
+"Margherita",
+"Rangia",
+"Pathsala",
+"Bokakhat",
+"Howraghat"
+
+],
+
+"Bihar":[
+
+"Patna",
+"Gaya",
+"Bhagalpur",
+"Muzaffarpur",
+"Darbhanga",
+"Purnia",
+"Bihar Sharif",
+"Ara",
+"Begusarai",
+"Katihar",
+"Munger",
+"Chapra",
+"Samastipur",
+"Sasaram",
+"Siwan",
+"Hajipur",
+"Motihari",
+"Bettiah",
+"Kishanganj",
+"Sitamarhi",
+"Madhubani",
+"Saharsa",
+"Khagaria",
+"Jamui",
+"Nawada",
+"Buxar",
+"Jehanabad",
+"Arrah",
+"Lakhisarai",
+"Sheikhpura"
+
+],
+
+"Chhattisgarh":[
+
+"Raipur",
+"Bhilai",
+"Durg",
+"Bilaspur",
+"Korba",
+"Raigarh",
+"Jagdalpur",
+"Ambikapur",
+"Rajnandgaon",
+"Dhamtari",
+"Mahasamund",
+"Kanker",
+"Kawardha",
+"Janjgir",
+"Champa",
+"Balod",
+"Bemetara",
+"Kondagaon",
+"Sukma",
+"Bijapur",
+"Narayanpur",
+"Balrampur",
+"Surajpur",
+"Gariaband",
+"Mungeli",
+"Baloda Bazar",
+"Dantewada",
+"Pathalgaon",
+"Dongargarh",
+"Pendra"
+
+],
+
+"Goa":[
+
+"Panaji",
+"Margao",
+"Vasco da Gama",
+"Mapusa",
+"Ponda",
+"Bicholim",
+"Curchorem",
+"Canacona",
+"Pernem",
+"Quepem",
+"Sanquelim",
+"Valpoi",
+"Cuncolim",
+"Sanguem",
+"Calangute",
+"Candolim",
+"Colva",
+"Anjuna",
+"Arambol",
+"Old Goa"
+
+],
+
+"Gujarat":[
+
+"Ahmedabad",
+"Surat",
+"Vadodara",
+"Rajkot",
+"Gandhinagar",
+"Bhavnagar",
+"Jamnagar",
+"Junagadh",
+"Anand",
+"Nadiad",
+"Bharuch",
+"Navsari",
+"Valsad",
+"Vapi",
+"Mehsana",
+"Palanpur",
+"Patan",
+"Morbi",
+"Surendranagar",
+"Amreli",
+"Porbandar",
+"Veraval",
+"Godhra",
+"Dahod",
+"Bhuj",
+"Gandhidham",
+"Ankleshwar",
+"Botad",
+"Himmatnagar",
+"Modasa",
+"Kalol",
+"Deesa",
+"Jetpur",
+"Gondal",
+"Dwarka",
+"Somnath",
+"Mundra",
+"Keshod",
+"Lunawada",
+"Vyara"
+
+],
+
+"Haryana":[
+
+"Ambala",
+"Bhiwani",
+"Charkhi Dadri",
+"Faridabad",
+"Fatehabad",
+"Gurugram",
+"Hisar",
+"Jhajjar",
+"Jind",
+"Kaithal",
+"Karnal",
+"Kurukshetra",
+"Mahendragarh",
+"Nuh",
+"Palwal",
+"Panchkula",
+"Panipat",
+"Rewari",
+"Rohtak",
+"Sirsa",
+"Sonipat",
+"Yamunanagar",
+"Bahadurgarh",
+"Hansi",
+"Ratia",
+"Tohana",
+"Narnaul",
+"Gohana",
+"Kosli",
+"Safidon"
+
+],
+
+"Himachal Pradesh":[
+
+"Shimla",
+"Dharamshala",
+"Mandi",
+"Solan",
+"Kullu",
+"Manali",
+"Hamirpur",
+"Bilaspur",
+"Chamba",
+"Una",
+"Nahan",
+"Kangra",
+"Palampur",
+"Sundarnagar",
+"Kasauli",
+"Dalhousie",
+"Keylong",
+"Reckong Peo",
+"Rampur Bushahr",
+"Rohru",
+"Jogindernagar",
+"Paonta Sahib",
+"Theog",
+"Arki",
+"Jawalamukhi",
+"Nurpur",
+"Dehra Gopipur",
+"Banjar",
+"Nadaun",
+"Bhuntar"
+
+],
+
+"Jharkhand":[
+
+"Ranchi",
+"Jamshedpur",
+"Dhanbad",
+"Bokaro Steel City",
+"Deoghar",
+"Hazaribagh",
+"Giridih",
+"Ramgarh",
+"Dumka",
+"Medininagar",
+"Chaibasa",
+"Lohardaga",
+"Gumla",
+"Khunti",
+"Simdega",
+"Godda",
+"Pakur",
+"Sahibganj",
+"Jamtara",
+"Koderma",
+"Chatra",
+"Latehar",
+"Garhwa",
+"West Singhbhum",
+"East Singhbhum",
+"Seraikela",
+"Bermo",
+"Phusro",
+"Madhupur",
+"Mihijam"
+
+],
+
+"Karnataka":[
+
+"Bengaluru",
+"Mysuru",
+"Mangaluru",
+"Hubballi",
+"Dharwad",
+"Belagavi",
+"Kalaburagi",
+"Ballari",
+"Vijayapura",
+"Shivamogga",
+"Tumakuru",
+"Davanagere",
+"Udupi",
+"Hassan",
+"Mandya",
+"Kolar",
+"Chikkaballapur",
+"Chikkamagaluru",
+"Kodagu",
+"Raichur",
+"Bidar",
+"Yadgir",
+"Koppal",
+"Gadag",
+"Haveri",
+"Bagalkot",
+"Ramanagara",
+"Vijayanagara",
+"Chamarajanagar",
+"Karwar",
+"Sirsi",
+"Bhadravati",
+"Hospet",
+"Madikeri",
+"Sakleshpur",
+"Puttur",
+"Ranebennur",
+"Gokak",
+"Jamkhandi",
+"Sindhanur",
+"Lingasugur",
+"Afzalpur",
+"Sedam",
+"Jewargi",
+"Kundapura",
+"Bhatkal",
+"Sagar",
+"Tiptur",
+"Arsikere",
+"Chitradurga",
+"Harihar",
+"Harapanahalli",
+"Karkala",
+"Moodbidri",
+"Surathkal",
+"Robertsonpet",
+"Nelamangala",
+"Doddaballapur",
+"Kanakapura",
+"Anekal"
+
+],
+
+"Kerala":[
+
+"Thiruvananthapuram",
+"Kochi",
+"Kozhikode",
+"Thrissur",
+"Kollam",
+"Kannur",
+"Alappuzha",
+"Kottayam",
+"Palakkad",
+"Malappuram",
+"Kasaragod",
+"Idukki",
+"Wayanad",
+"Pathanamthitta",
+"Ernakulam",
+"Kozhencherry",
+"Muvattupuzha",
+"Perumbavoor",
+"Angamaly",
+"Aluva",
+"Kalady",
+"Kothamangalam",
+"North Paravur",
+"Piravom",
+"Tripunithura",
+"Chalakudy",
+"Irinjalakuda",
+"Guruvayur",
+"Kunnamkulam",
+"Kodungallur",
+"Chavakkad",
+"Ottapalam",
+"Shoranur",
+"Mannarkkad",
+"Pattambi",
+"Tirur",
+"Manjeri",
+"Nilambur",
+"Perinthalmanna",
+"Ponnani",
+"Vadakara",
+"Koyilandy",
+"Thalassery",
+"Payyanur",
+"Taliparamba",
+"Mattannur",
+"Nedumangad",
+"Attingal",
+"Varkala",
+"Adoor",
+"Pandalam",
+"Kayamkulam",
+"Cherthala",
+"Haripad",
+"Mavelikkara",
+"Thodupuzha",
+"Sulthan Bathery",
+"Kalpetta",
+"Mananthavady"
+
+],
+
+"Madhya Pradesh":[
+
+"Bhopal",
+"Indore",
+"Jabalpur",
+"Gwalior",
+"Ujjain",
+"Sagar",
+"Rewa",
+"Satna",
+"Ratlam",
+"Dewas",
+"Burhanpur",
+"Khandwa",
+"Khargone",
+"Vidisha",
+"Sehore",
+"Betul",
+"Hoshangabad",
+"Narmadapuram",
+"Chhindwara",
+"Balaghat",
+"Mandsaur",
+"Neemuch",
+"Shivpuri",
+"Guna",
+"Ashoknagar",
+"Tikamgarh",
+"Datia",
+"Morena",
+"Bhind",
+"Sheopur",
+"Raisen",
+"Rajgarh",
+"Shajapur",
+"Agar Malwa",
+"Alirajpur",
+"Barwani",
+"Dhar",
+"Jhabua",
+"Panna",
+"Chhatarpur",
+"Damoh",
+"Katni",
+"Umaria",
+"Shahdol",
+"Anuppur",
+"Dindori",
+"Mandla",
+"Seoni",
+"Singrauli",
+"Sidhi",
+"Narsinghpur",
+"Harda",
+"Pandhurna",
+"Maihar",
+"Itarsi",
+"Pipariya",
+"Mhow",
+"Sanawad",
+"Sarni",
+"Waidhan"
+
+],
+
+"Maharashtra":[
+
+"Mumbai",
+"Navi Mumbai",
+"Thane",
+"Pune",
+"Nagpur",
+"Nashik",
+"Aurangabad",
+"Chhatrapati Sambhajinagar",
+"Kolhapur",
+"Solapur",
+"Satara",
+"Sangli",
+"Jalgaon",
+"Ahmednagar",
+"Amravati",
+"Akola",
+"Yavatmal",
+"Chandrapur",
+"Gondia",
+"Bhandara",
+"Wardha",
+"Gadchiroli",
+"Nanded",
+"Parbhani",
+"Hingoli",
+"Latur",
+"Osmanabad",
+"Dharashiv",
+"Beed",
+"Jalna",
+"Dhule",
+"Nandurbar",
+"Ratnagiri",
+"Sindhudurg",
+"Raigad",
+"Alibag",
+"Palghar",
+"Vasai",
+"Virar",
+"Kalyan",
+"Dombivli",
+"Ulhasnagar",
+"Panvel",
+"Bhiwandi",
+"Malegaon",
+"Igatpuri",
+"Shirdi",
+"Kopargaon",
+"Shrirampur",
+"Baramati",
+"Daund",
+"Karad",
+"Phaltan",
+"Miraj",
+"Ichalkaranji",
+"Pandharpur",
+"Akluj",
+"Washim",
+"Buldhana",
+"Khamgaon",
+"Shegaon",
+"Malkapur",
+"Pusad",
+"Wani",
+"Warora",
+"Ballarpur",
+"Tumsar",
+"Kamptee",
+"Hinganghat",
+"Achalpur",
+"Morshi",
+"Digras",
+"Udgir",
+"Nilanga",
+"Ambajogai",
+"Parli Vaijnath",
+"Manmad",
+"Sinnar",
+"Yeola",
+"Pathardi",
+"Shrigonda",
+"Karjat",
+"Lonavala",
+"Khopoli",
+"Mahad",
+"Dapoli",
+"Chiplun",
+"Sawantwadi",
+"Malvan",
+"Kudal"
+
+],
+
+"Manipur":[
+
+"Imphal",
+"Thoubal",
+"Bishnupur",
+"Kakching",
+"Churachandpur",
+"Senapati",
+"Ukhrul",
+"Tamenglong",
+"Jiribam",
+"Kangpokpi",
+"Moreh",
+"Moirang",
+"Nambol",
+"Lilong",
+"Mayang Imphal",
+"Wangjing",
+"Sugnu",
+"Yairipok",
+"Sekmai",
+"Andro"
+
+],
+
+"Meghalaya":[
+
+"Shillong",
+"Tura",
+"Jowai",
+"Nongpoh",
+"Williamnagar",
+"Baghmara",
+"Resubelpara",
+"Mawkyrwat",
+"Nongstoin",
+"Khliehriat",
+"Cherrapunji",
+"Mawsynram",
+"Dawki",
+"Ranikor",
+"Ampati",
+"Songsak",
+"Mendipathar",
+"Byrnihat",
+"Mairang",
+"Mawlai"
+
+],
+
+"Mizoram":[
+
+"Aizawl",
+"Lunglei",
+"Champhai",
+"Kolasib",
+"Serchhip",
+"Mamit",
+"Saiha",
+"Lawngtlai",
+"Khawzawl",
+"Hnahthial",
+"Saitual",
+"Bairabi",
+"Vairengte",
+"Lengpui",
+"Thenzawl",
+"Darlawn",
+"North Vanlaiphai",
+"Zawlnuam",
+"Kawnpui",
+"Biate"
+
+],
+
+"Nagaland":[
+
+"Kohima",
+"Dimapur",
+"Mokokchung",
+"Wokha",
+"Tuensang",
+"Mon",
+"Phek",
+"Zunheboto",
+"Kiphire",
+"Longleng",
+"Peren",
+"Noklak",
+"Chumoukedima",
+"Medziphema",
+"Tseminyu",
+"Pfutsero",
+"Jalukie",
+"Aghunato",
+"Shamator",
+"Meluri"
+
+],
+
+"Odisha":[
+
+"Bhubaneswar",
+"Cuttack",
+"Rourkela",
+"Sambalpur",
+"Berhampur",
+"Puri",
+"Balasore",
+"Baripada",
+"Bhadrak",
+"Jharsuguda",
+"Jeypore",
+"Koraput",
+"Rayagada",
+"Angul",
+"Dhenkanal",
+"Keonjhar",
+"Kendrapara",
+"Jagatsinghpur",
+"Jajpur",
+"Paradeep",
+"Balangir",
+"Bargarh",
+"Sundargarh",
+"Kalahandi",
+"Nabarangpur",
+"Nuapada",
+"Phulbani",
+"Nayagarh",
+"Sonepur",
+"Talcher",
+"Boudh",
+"Deogarh",
+"Aska",
+"Chhatrapur",
+"Kendujhar",
+"Malkangiri",
+"Umerkote",
+"Rairangpur",
+"Khordha",
+"Titilagarh"
+
+],
+
+"Punjab":[
+
+"Amritsar",
+"Ludhiana",
+"Jalandhar",
+"Patiala",
+"Bathinda",
+"Mohali",
+"Pathankot",
+"Hoshiarpur",
+"Kapurthala",
+"Firozpur",
+"Moga",
+"Batala",
+"Abohar",
+"Malerkotla",
+"Sangrur",
+"Barnala",
+"Faridkot",
+"Muktsar",
+"Fazilka",
+"Gurdaspur",
+"Nawanshahr",
+"Rupnagar",
+"Anandpur Sahib",
+"Rajpura",
+"Khanna",
+"Samrala",
+"Nabha",
+"Sunam",
+"Dhuri",
+"Kotkapura",
+"Zirakpur",
+"Kharar",
+"Phagwara",
+"Tarn Taran",
+"Jagraon",
+"Malout",
+"Dasuya",
+"Budhlada",
+"Morinda",
+"Dera Bassi"
+
+],
+
+"Rajasthan":[
+
+"Jaipur",
+"Jodhpur",
+"Udaipur",
+"Kota",
+"Ajmer",
+"Bikaner",
+"Alwar",
+"Bharatpur",
+"Sikar",
+"Pali",
+"Bhilwara",
+"Tonk",
+"Barmer",
+"Chittorgarh",
+"Hanumangarh",
+"Sri Ganganagar",
+"Jhunjhunu",
+"Nagaur",
+"Jaisalmer",
+"Banswara",
+"Dausa",
+"Dholpur",
+"Jhalawar",
+"Karauli",
+"Sawai Madhopur",
+"Rajsamand",
+"Pratapgarh",
+"Sirohi",
+"Bundi",
+"Baran",
+"Churu",
+"Dungarpur",
+"Jalore",
+"Neem Ka Thana",
+"Balotra",
+"Beawar",
+"Didwana",
+"Kekri",
+"Phalodi",
+"Gangapur City",
+"Makrana",
+"Kishangarh",
+"Abu Road",
+"Mount Abu",
+"Nathdwara",
+"Fatehpur",
+"Ladnun",
+"Sujangarh",
+"Ratangarh",
+"Nohar",
+"Rawatbhata",
+"Pilibanga",
+"Raisinghnagar",
+"Anupgarh",
+"Bhadra",
+"Sadulpur",
+"Laxmangarh",
+"Osian",
+"Sojat",
+"Jaitaran"
+
+],
+
+"Sikkim":[
+
+"Gangtok",
+"Namchi",
+"Gyalshing",
+"Mangan",
+"Singtam",
+"Rangpo",
+"Jorethang",
+"Nayabazar",
+"Ravangla",
+"Pakyong",
+"Soreng",
+"Rhenock",
+"Rongli",
+"Yuksom",
+"Dikchu",
+"Dentam",
+"Chungthang",
+"Lachen",
+"Lachung",
+"Legship"
+
+],
+
+"Tamil Nadu":[
+
+"Chennai",
+"Coimbatore",
+"Madurai",
+"Tiruchirappalli",
+"Salem",
+"Tirunelveli",
+"Erode",
+"Vellore",
+"Thoothukudi",
+"Dindigul",
+"Thanjavur",
+"Karur",
+"Namakkal",
+"Krishnagiri",
+"Dharmapuri",
+"Ranipet",
+"Tiruppur",
+"Nilgiris",
+"Cuddalore",
+"Villupuram",
+"Kanchipuram",
+"Chengalpattu",
+"Tiruvallur",
+"Kallakurichi",
+"Mayiladuthurai",
+"Nagapattinam",
+"Tenkasi",
+"Virudhunagar",
+"Sivaganga",
+"Ramanathapuram",
+"Pudukkottai",
+"Perambalur",
+"Ariyalur",
+"Tiruvannamalai",
+"Kanniyakumari",
+"Nagercoil",
+"Hosur",
+"Pollachi",
+"Mettupalayam",
+"Ooty",
+"Kodaikanal",
+"Palani",
+"Gobichettipalayam",
+"Udumalaipettai",
+"Avadi",
+"Tambaram",
+"Ambur",
+"Arakkonam",
+"Kumbakonam",
+"Pattukkottai",
+"Thiruvarur",
+"Sirkazhi",
+"Chidambaram",
+"Coonoor",
+"Kotagiri",
+"Paramakudi",
+"Rajapalayam",
+"Sankarankovil",
+"Tiruchendur",
+"Mannargudi"
+
+],
+
+"Telangana":[
+
+"Hyderabad",
+"Secunderabad",
+"Warangal",
+"Nizamabad",
+"Khammam",
+"Karimnagar",
+"Ramagundam",
+"Mahbubnagar",
+"Nalgonda",
+"Adilabad",
+"Suryapet",
+"Miryalaguda",
+"Jagtial",
+"Mancherial",
+"Bhongir",
+"Siddipet",
+"Kothagudem",
+"Wanaparthy",
+"Sangareddy",
+"Medak",
+"Vikarabad",
+"Jangaon",
+"Kamareddy",
+"Kodad",
+"Bodhan",
+"Tandur",
+"Nirmal",
+"Bhainsa",
+"Kagaznagar",
+"Gadwal",
+"Banswada",
+"Bhupalpally",
+"Yellandu",
+"Sircilla",
+"Manuguru",
+"Narayanpet",
+"Bellampally",
+"Achampet",
+"Devarakonda",
+"Kalwakurthy",
+"Zaheerabad",
+"Metpally",
+"Huzurabad",
+"Huzurnagar",
+"Korutla",
+"Armoor",
+"Bhuvanagiri",
+"Choppadandi",
+"Jadcherla",
+"Kothapet",
+"Nagarkurnool",
+"Pargi"
+
+],
+
+"Tripura":[
+
+"Agartala",
+"Udaipur",
+"Dharmanagar",
+"Kailashahar",
+"Belonia",
+"Khowai",
+"Ambassa",
+"Sabroom",
+"Sonamura",
+"Kamalpur",
+"Teliamura",
+"Bishalgarh",
+"Melaghar",
+"Mohanpur",
+"Jirania",
+"Ranirbazar",
+"Boxanagar",
+"Amarpur",
+"Gandhigram",
+"Panisagar"
+
+],
+
+"Uttar Pradesh":[
+
+"Lucknow",
+"Kanpur",
+"Varanasi",
+"Agra",
+"Prayagraj",
+"Noida",
+"Greater Noida",
+"Ghaziabad",
+"Meerut",
+"Aligarh",
+"Bareilly",
+"Moradabad",
+"Saharanpur",
+"Gorakhpur",
+"Jhansi",
+"Mathura",
+"Ayodhya",
+"Faizabad",
+"Firozabad",
+"Muzaffarnagar",
+"Shahjahanpur",
+"Rampur",
+"Etawah",
+"Mainpuri",
+"Budaun",
+"Bulandshahr",
+"Hapur",
+"Amroha",
+"Sambhal",
+"Baghpat",
+"Bijnor",
+"Pilibhit",
+"Lakhimpur Kheri",
+"Sitapur",
+"Hardoi",
+"Unnao",
+"Raebareli",
+"Sultanpur",
+"Amethi",
+"Barabanki",
+"Bahraich",
+"Shrawasti",
+"Balrampur",
+"Gonda",
+"Basti",
+"Sant Kabir Nagar",
+"Siddharthnagar",
+"Maharajganj",
+"Deoria",
+"Kushinagar",
+"Ballia",
+"Mau",
+"Ghazipur",
+"Jaunpur",
+"Mirzapur",
+"Sonbhadra",
+"Chandauli",
+"Bhadohi",
+"Azamgarh",
+"Ambedkar Nagar",
+"Kannauj",
+"Farrukhabad",
+"Auraiya",
+"Jalaun",
+"Lalitpur",
+"Hamirpur",
+"Mahoba",
+"Banda",
+"Chitrakoot",
+"Kasganj",
+"Etah",
+"Hathras",
+"Kaushambi",
+"Pratapgarh",
+"Fatehpur",
+"Shamli",
+"Obra",
+"Renukoot",
+"Tanda",
+"Rasra",
+"Robertsganj",
+"Pukhrayan",
+"Orai",
+"Tilhar",
+"Najibabad",
+"Khurja",
+"Modinagar",
+"Dadri",
+"Panki",
+"Shikohabad",
+"Tundla",
+"Vrindavan",
+"Kosi Kalan",
+"Rudrapur"
+
+],
+
+"Uttarakhand":[
+
+"Dehradun",
+"Haridwar",
+"Rishikesh",
+"Roorkee",
+"Haldwani",
+"Nainital",
+"Rudrapur",
+"Kashipur",
+"Ramnagar",
+"Kotdwar",
+"Pithoragarh",
+"Almora",
+"Bageshwar",
+"Champawat",
+"Pauri",
+"Srinagar",
+"Tehri",
+"New Tehri",
+"Uttarkashi",
+"Mussoorie",
+"Vikasnagar",
+"Kichha",
+"Sitarganj",
+"Gadarpur",
+"Tanakpur",
+"Laksar",
+"Doiwala",
+"Joshimath",
+"Karnaprayag",
+"Gopeshwar"
+
+],
+
+"West Bengal":[
+
+"Kolkata",
+"Howrah",
+"Durgapur",
+"Asansol",
+"Siliguri",
+"Darjeeling",
+"Kharagpur",
+"Haldia",
+"Malda",
+"Bardhaman",
+"Krishnanagar",
+"Berhampore",
+"Jalpaiguri",
+"Alipurduar",
+"Cooch Behar",
+"Raiganj",
+"Balurghat",
+"Bankura",
+"Purulia",
+"Bishnupur",
+"Midnapore",
+"Tamluk",
+"Contai",
+"Diamond Harbour",
+"Barasat",
+"Barrackpore",
+"Kalyani",
+"Nabadwip",
+"Ranaghat",
+"Habra",
+"Bongaon",
+"Basirhat",
+"Chandannagar",
+"Serampore",
+"Uttarpara",
+"Rishra",
+"Hooghly",
+"Arambagh",
+"Jhargram",
+"Bolpur",
+"Santiniketan",
+"Suri",
+"Rampurhat",
+"Kakdwip",
+"Kalimpong",
+"Islampur",
+"Memari",
+"Katwa",
+"Dinhata",
+"Falakata"
+
+],
+
+"Andaman and Nicobar Islands":[
+
+"Port Blair",
+"Diglipur",
+"Mayabunder",
+"Rangat",
+"Ferrargunj",
+"Garacharma",
+"Bambooflat",
+"Hut Bay",
+"Little Andaman",
+"Car Nicobar"
+
+],
+
+"Chandigarh":[
+
+"Chandigarh"
+
+],
+
+"Dadra and Nagar Haveli and Daman and Diu":[
+
+"Daman",
+"Diu",
+"Silvassa",
+"Naroli",
+"Amli",
+"Khanvel",
+"Rakholi",
+"Samarvarni",
+"Kachigam",
+"Dabhel"
+
+],
+
+"Delhi":[
+
+"New Delhi",
+"Central Delhi",
+"North Delhi",
+"South Delhi",
+"East Delhi",
+"West Delhi",
+"North East Delhi",
+"North West Delhi",
+"South East Delhi",
+"South West Delhi",
+"Shahdara",
+"Dwarka",
+"Rohini",
+"Pitampura",
+"Karol Bagh",
+"Lajpat Nagar",
+"Saket",
+"Vasant Kunj",
+"Janakpuri",
+"Mayur Vihar"
+
+],
+
+"Jammu and Kashmir":[
+
+"Srinagar",
+"Jammu",
+"Anantnag",
+"Baramulla",
+"Kupwara",
+"Pulwama",
+"Shopian",
+"Budgam",
+"Ganderbal",
+"Bandipora",
+"Sopore",
+"Kathua",
+"Udhampur",
+"Reasi",
+"Doda",
+"Kishtwar",
+"Ramban",
+"Rajouri",
+"Poonch",
+"Samba"
+
+],
+
+"Ladakh":[
+
+"Leh",
+"Kargil",
+"Nubra",
+"Diskit",
+"Padum",
+"Drass",
+"Tangtse",
+"Nyoma",
+"Khaltsi",
+"Shey"
+
+],
+
+"Lakshadweep":[
+
+"Kavaratti",
+"Agatti",
+"Amini",
+"Andrott",
+"Bitra",
+"Chetlat",
+"Kadmat",
+"Kalpeni",
+"Kiltan",
+"Minicoy"
+
+],
+
+"Puducherry":[
+
+"Puducherry",
+"Karaikal",
+"Mahe",
+"Yanam",
+"Villianur",
+"Bahour",
+"Nettapakkam",
+"Ariyankuppam",
+"Oulgaret",
+"Thirunallar"
+
+]
+
+    };
+
+    // ======================================
+    // Dynamic State -> City Dropdown
+    // ======================================
+
+    const stateSelect = document.getElementById("state");
+    const citySelect = document.getElementById("city");
+
+    stateSelect.addEventListener("change", function () {
+
+        const selectedState = this.value;
+
+        citySelect.innerHTML = "";
+
+        const defaultOption = document.createElement("option");
+        defaultOption.value = "";
+        defaultOption.textContent = "Select City";
+        citySelect.appendChild(defaultOption);
+
+        if (stateCityData[selectedState]) {
+
+            stateCityData[selectedState].forEach(function(city){
+
+                const option = document.createElement("option");
+
+                option.value = city;
+                option.textContent = city;
+
+                citySelect.appendChild(option);
+
+            });
+
+        }
+
+    });
+
+</script>
+
+</body>
+</html>

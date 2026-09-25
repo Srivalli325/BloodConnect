@@ -1,0 +1,318 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Register - BloodConnect</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+<style>
+
+:root{
+    --red:#dc2626;
+    --blue:#2563eb;
+    --dark:#0f172a;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Outfit',sans-serif;
+    background:linear-gradient(
+    135deg,
+    #0f172a 0%,
+    #1e3a8a 35%,
+    #2563eb 70%,
+    #dc2626 100%);
+    min-height:100vh;
+    color:white;
+}
+
+/* NAVBAR */
+
+.navbar{
+    background:rgba(15,23,42,.95);
+    backdrop-filter:blur(12px);
+    padding:16px 0;
+    box-shadow:0 5px 25px rgba(37,99,235,.25);
+}
+
+.navbar-brand{
+    font-size:34px;
+    font-weight:800;
+    color:var(--red)!important;
+}
+
+.nav-link{
+    color:white!important;
+    margin-left:22px;
+    font-weight:600;
+}
+
+.nav-link:hover{
+    color:var(--red)!important;
+}
+
+/* REGISTER */
+
+.register-section{
+    min-height:90vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:60px 20px;
+}
+
+.register-card{
+    width:100%;
+    max-width:650px;
+    background:rgba(30,41,59,.92);
+    backdrop-filter:blur(14px);
+    border-radius:30px;
+    padding:45px;
+    border:1px solid rgba(255,255,255,.08);
+    box-shadow:0 20px 50px rgba(0,0,0,.35);
+}
+
+.register-card h2{
+    text-align:center;
+    font-weight:800;
+    color:#dc2626;
+    margin-bottom:10px;
+}
+
+.register-card p{
+    text-align:center;
+    color:#cbd5e1;
+    margin-bottom:30px;
+}
+
+.form-label{
+    font-weight:600;
+}
+
+.form-control,
+.form-select{
+    height:52px;
+    border-radius:12px;
+    border:none;
+}
+
+.form-control:focus,
+.form-select:focus{
+    box-shadow:0 0 12px rgba(37,99,235,.5);
+}
+
+.btn-register{
+    width:100%;
+    height:55px;
+    background:#dc2626;
+    color:white;
+    border:none;
+    border-radius:14px;
+    font-size:18px;
+    font-weight:700;
+    transition:.3s;
+}
+
+.btn-register:hover{
+    background:white;
+    color:#dc2626;
+}
+
+.bottom-text{
+    text-align:center;
+    margin-top:20px;
+    color:#cbd5e1;
+}
+
+.bottom-text a{
+    color:#dc2626;
+    text-decoration:none;
+    font-weight:700;
+}
+
+.bottom-text a:hover{
+    text-decoration:underline;
+}
+
+footer{
+    background:#020617;
+    padding:25px;
+    text-align:center;
+    color:#94a3b8;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg">
+
+<div class="container">
+
+<a class="navbar-brand" href="/">BloodConnect</a>
+
+<div>
+<a class="nav-link d-inline" href="/">Home</a>
+<a class="nav-link d-inline" href="{% url 'login' %}">Login</a>
+</div>
+
+</div>
+
+</nav>
+
+<section class="register-section">
+
+<div class="register-card">
+
+<h2>Create Account</h2>
+
+<p>Join BloodConnect and become a lifesaver today.</p>
+
+{% if error %}
+<div class="alert alert-danger text-center">
+    {{ error }}
+</div>
+{% endif %}
+
+<form method="POST">
+
+{% csrf_token %}
+
+<div class="row">
+
+<div class="col-md-6 mb-3">
+<label class="form-label">Full Name</label>
+<input type="text" name="full_name" class="form-control" placeholder="Enter Full Name" required>
+</div>
+
+<div class="col-md-6 mb-3">
+<label class="form-label">Username</label>
+<input type="text" name="username" class="form-control" placeholder="Choose Username" required>
+</div>
+
+<div class="col-md-6 mb-3">
+<label class="form-label">Email Address</label>
+<input type="email" name="email" class="form-control" placeholder="Enter Email" required>
+</div>
+
+<div class="col-md-6 mb-3">
+<label class="form-label">Security Question</label>
+
+<select name="security_question" class="form-select" required>
+
+<option value="">Select Security Question</option>
+
+<option value="pet">What is your first pet's name?</option>
+
+<option value="school">What is your first school name?</option>
+
+<option value="city">Which city were you born in?</option>
+
+<option value="friend">Who is your childhood best friend?</option>
+
+</select>
+
+</div>
+
+<div class="col-md-6 mb-3">
+<label class="form-label">Security Answer</label>
+
+<input
+type="text"
+name="security_answer"
+class="form-control"
+placeholder="Enter your answer"
+required>
+
+</div>
+
+<div class="col-md-6 mb-3">
+<label class="form-label">Password</label>
+
+<input
+type="password"
+name="password"
+class="form-control"
+placeholder="Create Password"
+required>
+
+</div>
+
+<div class="col-12 mb-4">
+
+<label class="form-label">
+Confirm Password
+</label>
+
+<input
+type="password"
+name="confirm_password"
+class="form-control"
+placeholder="Confirm Password"
+required>
+
+</div>
+
+</div>
+
+<button type="submit" class="btn-register">
+
+<i class="fa-solid fa-user-plus me-2"></i>
+
+Create Account
+
+</button>
+
+<div class="bottom-text">
+
+Already have an account?
+
+<a href="{% url 'login' %}">
+Login Here
+</a>
+
+</div>
+
+</form>
+
+</div>
+
+</section>
+
+<footer>
+
+<h5 class="text-danger fw-bold">
+BloodConnect
+</h5>
+
+<p>
+Connecting donors and saving lives every day.
+</p>
+
+<p class="mb-0">
+© 2026 BloodConnect • Made with Django & Bootstrap
+</p>
+
+</footer>
+
+</body>
+</html>
+
