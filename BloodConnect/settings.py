@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-gcq(ucz!4e9s6ba_8q9-cqtck8_-ub!oakd8z3ovyd=m6m^iyq'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['bloodconnect-aiax.onrender.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
